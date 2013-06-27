@@ -61,13 +61,13 @@
 
       <address>
         <postal>
-          <street></street>
+          <street/>
 
           <city>Brussels</city>
 
-          <region></region>
+          <region/>
 
-          <code></code>
+          <code/>
 
           <country>Belgium</country>
         </postal>
@@ -76,7 +76,45 @@
       </address>
     </author>
 
-    <date day="11" month="June" year="2013" />
+    <author fullname="Hannes Gredler" initials="H." surname="Gredler">
+      <organization>Juniper Networks, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>1194 N. Mathilda Ave.</street>
+
+          <city>Sunnyvale</city>
+
+          <code>94089</code>
+
+          <region>CA</region>
+
+          <country>US</country>
+        </postal>
+
+        <email>hannes@juniper.net</email>
+      </address>
+    </author>
+
+    <author fullname="Rob Shakir" initials="R." surname="Shakir">
+      <organization>British Telecom</organization>
+
+      <address>
+        <postal>
+          <street/>
+
+          <city>London</city>
+
+          <code/>
+
+          <country>UK</country>
+        </postal>
+
+        <email>rob.shakir@bt.com</email>
+      </address>
+    </author>
+
+    <date day="27" month="June" year="2013"/>
 
     <workgroup>Network Working Group</workgroup>
 
@@ -103,12 +141,11 @@
       <t>Segment Routing (SR) allows for a flexible definition of end-to-end
       paths within IGP topologies by encoding paths as sequences of
       topological sub-paths, called "segments". These segments are advertised
-      by the link-state routing protocols (IS-IS and OSPF). Two types of
-      segments are defined, Prefix segments and Adjacency segments. Prefix
-      segments represent an ecmp-aware shortest-path to a prefix (or a node),
-      as per the state of the IGP topology. Adjacency segments represent a hop
-      over a specific adjacency between two nodes in the IGP. A prefix segment
-      is typically a multi-hop path while an adjacency segment, in most of the
+      by the link-state routing protocols (IS-IS and OSPF). Prefix segments
+      represent an ecmp-aware shortest-path to a prefix (or a node), as per
+      the state of the IGP topology. Adjacency segments represent a hop over a
+      specific adjacency between two nodes in the IGP. A prefix segment is
+      typically a multi-hop path while an adjacency segment, in most of the
       cases, is a one-hop path. SR's control-plane can be applied to both IPv6
       and MPLS data-planes, and do not require any additional signaling (other
       than the regular IGP). For example, when used in MPLS networks, SR paths
@@ -119,184 +156,152 @@
       introduced for Segment Routing.</t>
 
       <t>Segment Routing architecture is described in <xref
-      target="draft-filsfils-rtgwg-segment-routing-00"></xref>.</t>
+      target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
 
       <t>Segment Routing use cases are described in <xref
-      target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>.</t>
+      target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
     </section>
 
-    <section title="OSPFv2 Segment Routing Capability TLV">
-      <t>Segment Routing requires each router to advertise various
-      capabilities associated with Segment Routing throughout the autonomous
-      system.</t>
+    <section title="Segment Routing Identifiers">
+      <t>Segment Routing defines various types of Segment Identifiers (SIDs):
+      Prefix-SID, Adjacency-SID, LAN Adjacency SID and Binding SID.</t>
 
-      <t>For the purposes of Segment Routing, a new TLV is defined in Router
-      Information Opaque LSA (defined in <xref target="RFC4970"></xref>: the
-      Segment Routing Capability TLV (SR-Cap TLV).</t>
+      <t>For the purpose of the advertisements of various SID values new
+      Opaque LSAs (defined in <xref target="RFC5250"/>) are defined. These new
+      LSAs are defined as generic containers that can be used in order to
+      advertise any additional attributes associated with the prefix or link.
+      These new Opaque LSAs are complementary to the existing LSAs and are not
+      aimed to replace any of the existing LSAs.</t>
 
-      <t>If the SR-Cap TLV appear in Router Information Opaque LSA, it MUST
-      appear only once and has following format: <figure>
-          <artwork> 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            Type               |          Length               |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       SR Capability Flags                     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                                                               |
-+-                       Sub-TLVs (variable)                   -+
-|                             ...                               |
-  
-where:</artwork>
-        </figure><list style="hanging">
-          <t>Type: TBA.</t>
-
-          <t>Length: A 16-bit field that indicates the length of the value
-          portion in octets. Set to 12.</t>
-
-          <t>SR Capabilities Flags: 2 octets field of following flags: <figure>
-              <artwork> 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|R|X|                                                           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-        
-where:</artwork>
-            </figure><list style="hanging">
-              <t>R-flag: SR Control-Plane flag. If set, then the advertising
-              router is capable of SR control-plane.</t>
-
-              <t>X-Flag: Index flag. If set, then each SID with the G-Flag set
-              that is advertised by this router represents an index in the SID
-              space also advertised by this router (using the encodings
-              defined below). Indexed SID values are described in <xref
-              target="draft-filsfils-rtgwg-segment-routing-00"></xref>. If the
-              X-Flag is not set, then SID values 0-63 are reserved and MUST
-              NOT be used by the SR control plane for either node or adjacency
-              segments. Any SID which is received with a value 0-63 and the
-              X-Flag unset MUST be ignored and the router SHOULD log an
-              error.</t>
-
-              <t>Other bits: MUST be zero when sent and ignored when
-              received.</t>
-            </list></t>
-        </list></t>
-
-      <t>RI LSA can be advertised at any of the defined flooding scopes (link,
-      area, or autonomous system (AS)). For the purpose of the SR-Cap TLV
-      propagation, autonomous system scope flooding is required.</t>
-
-      <t>Within the SR-Cap TLV, new Sub-TLVs are defined: <list
-          style="hanging">
-          <t>SID Range Sub-TLV</t>
-
-          <t>Segment Routing Mirroring Context Sub-TLV (SRMC)</t>
-        </list></t>
-
-      <section anchor="SIDRANGE" title="SID Range Sub-TLV">
-        <t>The SID Range Sub-TLV allows a router to advertise its SID space to
-        other routers in the area.</t>
-
-        <t>The SID Range Sub-TLV is a Sub-TLV of the SR-Cap-TLV. It MUST
-        appear only once and has following format:<figure>
+      <section anchor="SIDLABEL" title="SID/Label TLV">
+        <t>SID/Label TLV appears as Sub-TLV in multiple TLVs or Sub-TLVs
+        defined later in this document. It is used to advertise SID or label
+        associated with the prefix or adjacency. SID/Lable TLV has following
+        format:<figure>
             <artwork> 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        First SID Value                        |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Last  SID Value                        |
+|                         SID/Label (variable)                  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-where:</artwork>
+where:
+</artwork>
           </figure><list style="hanging">
-            <t>First SID Value and Last SID Value represent the local SID
-            range of the router. The semantic and procedures of these values
-            are described in <xref
-            target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>.</t>
-          </list></t>
-      </section>
+            <t>Type: TBA</t>
 
-      <section title="Segment Routing Mirroring Context Sub-TLV (SRMC)">
-        <t>Segment Routing allows the use of a context SID that determines a
-        specific use case or applicability. Use cases are described in <xref
-        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>.
-        One of such use cases is the service mirroring, for which the new
-        sub-TLV is defined.</t>
+            <t>Length: variable, 3 or 4 bytes</t>
 
-        <t>Another example of mirroring use case is described in <xref
-        target="I-D.minto-rsvp-lsp-egress-fast-protection"></xref>.</t>
+            <t>SID/Label: if length is set to 3, then the 20 rightmost bits
+            represent a label. If length is set to 4 then the value represents
+            a 32 bit SID.</t>
 
-        <t>The SRMC Sub-TLV is an optional sub-TLV of SR-Cap-TLV. It MAY
-        appear in SR-Cap-TLV more than once and has following format: <figure>
-            <artwork> 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type        |     Length    |          SRMC Flags           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Mirrored Address (4 octets)             |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Context-SID (4 octets)                  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            <t/>
 
-where:</artwork>
-          </figure><list style="hanging">
-            <t>Type: TBA.</t>
-
-            <t>Length: 2 octets.</t>
-
-            <t>SRMC Flags: 2 octets field of flags. Following flags are
-            defined:<figure>
-                <artwork> 0                   1
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|R|                             |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-where:</artwork>
-              </figure><list style="hanging">
-                <t>R-flag: Segment Routing Identifier. If set, the Mirrored
-                Address contains a SID.</t>
-
-                <t>Other bits: MUST be zero when sent and ignored when
-                received.</t>
-              </list></t>
-
-            <t>Mirrored Address: IPv4 address or SID value representing the
-            mirrored element.</t>
-
-            <t>Context-SID: 32 bit value of Segment Identifier for the
-            Mirroring Service.</t>
+            <t/>
           </list></t>
       </section>
     </section>
 
-    <section title="Segment Routing Identifiers">
-      <t>Segment Routing defines two types of Segment Identifiers: Prefix-SID
-      and Adjacency-SID.</t>
+    <section anchor="SRCAP" title="Segment Routing Capabilities">
+      <t>Segment Routing requires some additional capabilities of the router
+      to be advertised to other routers in the area.</t>
 
-      <t>For the purpose of the Prefix-SID and Adjacency-SID advertisement new
-      Opaque LSAs (defined in <xref target="RFC5250"></xref>) are defined.
-      These new LSAs are defined as generic containers that can be used in
-      order to advertise any additional attributes associated with the prefix
-      or link. These new Opaque LSAs are complementary to the existing LSAs
-      and are not aimed to replace any of the existing LSAs.</t>
+      <t>These SR capabilities are advertised in Router Information Opaque LSA
+      (defined in <xref target="RFC4970"/>.</t>
 
-      <section anchor="NODESID"
-               title="OSPFv2 Extended Prefix Opaque LSA type ">
-        <t>A new Opaque LSA (defined in <xref target="RFC5250"></xref>) is
-        defined in OSPFv2 in order to advertise additional prefix attributes:
-        OSPFv2 Extended Prefix Opaque LSA.</t>
+      <section anchor="SRALGO" title="SR-Algorithm TLV">
+        <t>SR-Algorithm TLV is a TLV of Router Information Opaque LSA (defined
+        in <xref target="RFC4970"/>.</t>
 
-        <t>Multiple OSPFv2 Extended Prefix Opaque LSAs can be advertised by a
-        single router. Flooding scope of the OSPFv2 Extended Prefix Opaque LSA
-        depends on the content inside the LSA and is in control of the
-        originating router.</t>
+        <t>Router may use various algorithms when calculating reachability to
+        other nodes in area or to prefixes attached to these nodes. Examples
+        of these algorithms are metric based Shortest Path First (SPF),
+        various sorts of Constrained SPF, etc. SR-Algorithm TLV allows a
+        router to advertise algorithms that router is currently using to other
+        routers in an area. SR-Algorithm TLV has following structure: <figure>
+            <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Type             |             Length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Algorithm 1 | Algorithm...  |   Algorithm n |               |
++-                                                             -+
+|                                                               |
++                                                               +
 
-        <t>The format of the OSPFv2 Extended Prefix Opaque LSA is as follows:
-        <figure>
-            <artwork> 0                   1                   2                   3
+where:</artwork>
+          </figure><list style="hanging">
+            <t>Type: TBA</t>
+
+            <t>Length: variable</t>
+
+            <t>Algorithm: one octet identifying the algorithm. The following
+            value has been defined:<list style="hanging">
+                <t>0: IGP metric based SPT.</t>
+              </list></t>
+          </list></t>
+
+        <t>RI LSA can be advertised at any of the defined flooding scopes
+        (link, area, or autonomous system (AS)). For the purpose of the
+        SR-Algorithm TLV propagation area scope flooding is required.</t>
+      </section>
+
+      <section anchor="SIDRANGE" title="SID/Label Range Sub-TLV">
+        <t>The SID/Label Range TLV is a TLV of Router Information Opaque LSA
+        (defined in <xref target="RFC4970"/>.</t>
+
+        <t>SID/Label Sub-TLV MAY appear multiple times and has following
+        format:<figure>
+            <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Type             |             Length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Range Size           |           Reserved            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Sub-TLVs (variable)                    |
++-                                                             -+
+|                                                               |
++                                                               +
+
+where:</artwork>
+          </figure><list style="hanging">
+            <t>Type: TBA</t>
+
+            <t>Length: variable</t>
+
+            <t>Range Size: size of the SID/label range</t>
+          </list></t>
+
+        <t>Currently the only supported Sub-TLV is the SID/Label TLV as
+        defined in <xref target="SIDLABEL"/>. SID/Label advertised in
+        SID/Label TLV represents the first SID/Label from the advertised
+        range.</t>
+
+        <t>RI LSA can be advertised at any of the defined flooding scopes
+        (link, area, or autonomous system (AS)). For the purpose of the
+        SR-Capability TLV propagation area scope flooding is required.</t>
+      </section>
+    </section>
+
+    <section anchor="EXTPXLSA" title="OSPFv2 Extended Prefix Opaque LSA type ">
+      <t>A new Opaque LSA (defined in <xref target="RFC5250"/>) is defined in
+      OSPFv2 in order to advertise additional prefix attributes: OSPFv2
+      Extended Prefix Opaque LSA.</t>
+
+      <t>Multiple OSPFv2 Extended Prefix Opaque LSAs can be advertised by a
+      single router. Flooding scope of the OSPFv2 Extended Prefix Opaque LSA
+      depends on the content inside the LSA and is in control of the
+      originating router.</t>
+
+      <t>The format of the OSPFv2 Extended Prefix Opaque LSA is as follows:
+      <figure>
+          <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |            LS age             |     Options   |  9, 10, or 11 |
@@ -312,37 +317,38 @@ where:</artwork>
 |                                                               |
 +-                            TLVs                             -+
 |                             ...                               |</artwork>
-          </figure></t>
+        </figure></t>
 
-        <t>The format of the TLVs within the body of the LSA is the same as
-        the format used by the Traffic Engineering Extensions to OSPF defined
-        in <xref target="RFC3630"></xref>. The LSA payload consists of one or
-        more nested Type/Length/Value (TLV) triplets. The format of each TLV
-        is:</t>
+      <t>The format of the TLVs within the body of the LSA is the same as the
+      format used by the Traffic Engineering Extensions to OSPF defined in
+      <xref target="RFC3630"/>. The LSA payload consists of one or more nested
+      Type/Length/Value (TLV) triplets. The format of each TLV is:</t>
 
-        <figure>
-          <artwork> 0                   1                   2                   3
+      <figure>
+        <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                            Value...                           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</artwork>
-        </figure>
+      </figure>
 
-        <t>The Length field defines the length of the value portion in octets.
-        The TLV is padded to 4-octet alignment; padding is not included in the
-        length field. Nested TLVs are also 32-bit aligned. Unrecognized types
-        are ignored.</t>
+      <t>The Length field defines the length of the value portion in octets.
+      The TLV is padded to 4-octet alignment; padding is not included in the
+      length field. Nested TLVs are also 32-bit aligned. Unrecognized types
+      are ignored.</t>
 
-        <section title="OSPF Extended Prefix TLV">
-          <t>The OSPF Extended Prefix TLV is used in order to advertise
-          additional attributes associated with the prefix. Multiple OSPF
-          Extended Prefix TLVs MAY be carried in each OSPFv2 Extended Prefix
-          Opaque LSA, however all prefixes included in the single OSPFv2
-          Extended Prefix Opaque LSA MUST have the same flooding scope. The
-          structure of the OSPF Extended Prefix TLV is as follows: <figure>
-              <artwork> 0                   1                   2                   3
+      <section title="OSPF Extended Prefix TLV">
+        <t>The OSPF Extended Prefix TLV is used in order to advertise
+        additional attributes associated with the prefix. Multiple OSPF
+        Extended Prefix TLVs MAY be carried in each OSPFv2 Extended Prefix
+        Opaque LSA, however all prefixes included in the single OSPFv2
+        Extended Prefix Opaque LSA MUST have the same flooding scope. The
+        structure of the OSPF Extended Prefix TLV is as follows: <figure>
+            <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
@@ -355,121 +361,402 @@ where:</artwork>
 +-                                                             -+
 |                                                               |
 
-Type is TBA.
+where: </artwork>
+          </figure><list style="hanging">
+            <t>Type is TBA.</t>
 
-Length is variable
+            <t>Length is variable</t>
 
-Route type: type of the OSPF route. Supported types are:
-
-   1 - intra-area
+            <t>Route type: type of the OSPF route. Supported types are:<figure>
+                <artwork>   1 - intra-area
    3 - inter-area
    5 - external
-   7 - NSSA external
+   7 - NSSA external</artwork>
+              </figure>If the route type is 0 (unspecified) the information
+            inside the OSPF External Prefix TLV applies to the prefix
+            regardless of what route-type it is. This is useful when some
+            prefix specific attributes are advertised by some external entity,
+            which is not aware of the route-type associated with the
+            prefix.</t>
 
-Prefix length: length of the prefix
+            <t>Prefix length: length of the prefix</t>
 
-AF:
-   0 - IPv4 unicast</artwork>
-            </figure><list style="hanging">
-              <t>Address Prefix: the prefix itself encoded as an even multiple
-              of 32-bit words, padded with zeroed bits as necessary. This
-              encoding consumes ((PrefixLength + 31) / 32) 32-bit words. The
-              default route is represented by a prefix of length 0.</t>
-            </list></t>
-        </section>
+            <t>AF: 0 - IPv4 unicast</t>
 
-        <section title="Prefix SID Sub-TLV">
-          <t>The Prefix SID Sub-TLV is a Sub-TLV of the OSPF Extended Prefix
-          TLV. It may MAY appear more than once for the same prefix and has
-          following format: <figure>
-              <artwork> 0                   1                   2                   3
+            <t>Address Prefix: the prefix itself encoded as an even multiple
+            of 32-bit words, padded with zeroed bits as necessary. This
+            encoding consumes ((PrefixLength + 31) / 32) 32-bit words. The
+            default route is represented by a prefix of length 0.</t>
+          </list></t>
+      </section>
+
+      <section anchor="PREFIXSID" title="Prefix SID Sub-TLV">
+        <t>The Prefix SID Sub-TLV is a Sub-TLV of the OSPF Extended Prefix
+        TLV. It MAY appear more than once and has following format: <figure>
+            <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|             Flags             |    MT-ID        |   Reserved  |
+|      Flags    |    MT-ID      |Algorithm  |      Reserved     | 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Prefix SID                            |
+|                           Index                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 where:</artwork>
-            </figure><list style="hanging">
-              <t>Type is TBA.</t>
+          </figure><list style="hanging">
+            <t>Type is TBA.</t>
 
-              <t>Length: A 16-bit field that indicates the length of the value
-              portion in octets. Set to 8.</t>
+            <t>Length: A 16-bit field that indicates the length of the value
+            portion in octets. Set to 8.</t>
 
-              <t>Flags: 2 octets field. The following flags are defined:
-              <figure>
-                  <artwork> 0                   1
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|N|P|G|M|                       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            <t>Flags: 1 octet field. The following flags are defined: <figure
+                align="center">
+                <artwork>
+ 0      
+ 0 1 2 3 4 5 6 7 
++-+-+-+-+-+-+-+-+
+|N|P|M|         |
++-+-+-+-+-+-+-+-+
 
 where:</artwork>
-                </figure><list style="hanging">
-                  <t>N-Flag: Node-SID flag. If set, then the Prefix-SID refers
-                  to the router identified by the prefix. Typically, the
-                  N-Flag is set on Prefix-SIDs attached to a router loopback
-                  address. The N-Flag is set when the Prefix-SID is a Node-
-                  SID as described in <xref
-                  target="draft-filsfils-rtgwg-segment-routing-00"></xref>.</t>
+              </figure><list style="hanging">
+                <t>N-Flag: Node-SID flag. If set, then the Prefix-SID refers
+                to the router identified by the prefix. Typically, the N-Flag
+                is set on Prefix-SIDs attached to a router loopback address.
+                The N-Flag is set when the Prefix-SID is a Node- SID as
+                described in <xref
+                target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
 
-                  <t>P-Flag: no-PHP flag. If set, then the penultimate hop
-                  MUST NOT pop the Prefix-SID before delivering the packet to
-                  the node that advertised the Prefix-SID.</t>
+                <t>P-Flag: no-PHP flag. If set, then the penultimate hop MUST
+                NOT pop the Prefix-SID before delivering the packet to the
+                node that advertised the Prefix-SID.</t>
 
-                  <t>G-Flag: Global flag. When set, the SID value has global
-                  significance which means the SID has been allocated from the
-                  Segment Routing Global Block (SRGB) as described in <xref
-                  target="draft-filsfils-rtgwg-segment-routing-00"></xref>.
-                  When unset, the SID value has local (within the router)
-                  significance which means the SID has NOT been allocated from
-                  the SRGB. When the Prefix-SID Sub-TLV carries an IGP Prefix
-                  SID, then the G-flag MUST be set.</t>
+                <t>M-Flag: Mapping Server Flag. If set, the SID is advertised
+                from the Segment Routing Mapping Server functionality as
+                described in <xref
+                target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
 
-                  <t>M-Flag: Mapping Server Flag. If set, the SID is
-                  advertised from the Segment Routing Mapping Server
-                  functionality as described in <xref
-                  target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>.</t>
+                <t>Other bits: MUST be zero when sent and ignored when
+                received.</t>
+              </list></t>
 
-                  <t>Other bits: MUST be zero when sent and ignored when
-                  received.</t>
-                </list></t>
-            </list></t>
+            <t>MT-ID: Multi-Topology ID (as defined in <xref
+            target="RFC4915"/>).</t>
 
-          <t>Prefix Segment Identifier (SID): 32 bits of Prefix-SID.</t>
+            <t>Algorithm: one octet identifying the algorithm the Prefix-SID
+            is associated with as defined in <xref target="SRALGO"/>.</t>
 
-          <t>If multiple Prefix-SIDs are advertised for the same prefix, the
-          receiving router MUST use the first encoded SID and MAY use the
-          subsequent ones.</t>
+            <t>Index: 32 bits representing the offset to the advertised
+            SID/Label range.</t>
+          </list></t>
 
-          <t>The No-PHP flag MUST be set on the Prefix-SIDs allocated to
-          inter-area prefixes that are originated by the router based on
-          intra-area reachability.</t>
-        </section>
+        <t>If multiple Prefix-SIDs are advertised for the same prefix, the
+        receiving router MUST use the first encoded SID and MAY use the
+        subsequent ones.</t>
+
+        <t>PHP flag MUST not be set on the Prefix-SIDs allocated to inter-
+        area prefixes that are originated by the router based on intra-area or
+        inter-area reachability between areas.</t>
       </section>
 
-      <section anchor="ADJSID" title="Adjacency Segment Identifier (Adj-SID)">
-        <t>An Adjacency Segment Identifier (Adj-SID) represents a router
-        adjacency in Segment Routing. At the current stage of Segment Routing
-        architecture it is assumed that the Adj-SID value has local
-        significance (to the router). The Adj-SID value is encoded as a 32 bit
-        number.</t>
+      <section anchor="SIDBINDING" title="SID/Label Binding TLV">
+        <t>SID/Label Binding TLV is used to advertise SID/Label mapping for a
+        prefix or a path to the prefix. SID/Label value advertised in this TLV
+        has local significance (to the router).</t>
 
-        <section title="OSPFv2 Extended Link Opaque LSA ">
-          <t>A new Opaque LSA (defined in <xref target="RFC5250"></xref> is
-          defined in OSPFv2 in order to advertise additional link attributes:
-          the OSPFv2 Extended Link Opaque LSA.</t>
+        <t>SID/Label Binding TLV is a Sub-TLV of the OSPF Extended Prefix TLV.
+        Multiple SID/Label Binding TLVs can be present in OSPF Extended Prefix
+        TLV. SID/Label Binding TLV has following format: <figure>
+            <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Type             |             Length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Flags       |    MT-ID      |    Weight     |    Reserved   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      Sub-TLVs (variable)                      |
++-                                                             -+
+|                                                               |
 
-          <t>The OSPFv2 Extended Link Opaque LSA has an area flooding scope.
-          Multiple OSPFv2 Extended Link Opaque LSAs can be advertised by a
-          single router in an area.</t>
+where: </artwork>
+          </figure><list style="hanging">
+            <t>Type: TBA</t>
 
-          <t>The format of the OSPFv2 Extended Link Opaque LSA is as follows:
-          <figure>
-              <artwork> 0                   1                   2                   3
+            <t>Length: variable</t>
+
+            <t>Flags: 1 octet field of following flags:<figure align="center">
+                <artwork>
+ 0 1 2 3 4 5 6 7 
++-+-+-+-+-+-+-+-+
+|M|             |
++-+-+-+-+-+-+-+-+
+
+where:</artwork>
+              </figure><list style="hanging">
+                <t>M-bit - When the bit is set the binding represents the
+                mirroring context.</t>
+              </list></t>
+
+            <t>MT-ID: Multi-Topology ID (as defined in <xref
+            target="RFC4915"/>).</t>
+
+            <t>Weight: weight used for load-balancing purposes. The use of the
+            weight is defined in <xref
+            target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
+          </list></t>
+
+        <t>SID/Label Binding TLV currently supports following Sub-TLVs:<list
+            style="hanging">
+            <t>SID/Lable TLV as described in <xref target="SIDLABEL"/>. This
+            TLV MUST appear in the SID/Label Binding Sub-TLV and it MUST only
+            appear once.</t>
+
+            <t>ERO TLVs as defined in sections XXXXXXXX to XXXXXXX.</t>
+          </list></t>
+
+        <section anchor="EROTLV" title="ERO TLVs">
+          <t>All 'ERO' information represents an ordered set which describes
+          the segments of a path. The last ERO TLV describes the segment
+          closest to the egress point, contrary the first ERO TLV describes
+          the first segment of a path. If a router extends or stitches a path
+          it MUST prepend the new segments path information to the ERO
+          list.</t>
+
+          <t>The above similarly applies to backup EROs.</t>
+
+          <t>All ERO Sub-TLVs must immediately follow the (SID)/Label
+          Sub-TLV.</t>
+
+          <t>All Backup ERO TLVs must immediately follow last ERO Sub-TLV.</t>
+
+          <section anchor="IPV4ERO" title="IPv4 Prefix ERO TLV">
+            <t>IPv4 Prefix ERO TLV is a Sub-TLV of the SID/Lable Binding
+            TLV.</t>
+
+            <t>The IPv4 ERO TLV describes a path segment using IPv4 Prefix</t>
+
+            <t>The IPv4 ERO TLV describes a path segment using IPv4 Prefix
+            style of encoding. Its appearance and semantics have been borrowed
+            from <xref target="RFC3209"/>. <figure
+                title="IPv4 Prefix ERO TLV format">
+                <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Type             |             Length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Flags       |             Reserved                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     IPv4 Address (4 octets)                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+where:</artwork>
+              </figure><list style="hanging">
+                <t>Type: TBA</t>
+
+                <t>Length: 8 bytes</t>
+
+                <t>Flags: 1 octet field of following flags:<figure
+                    align="center">
+                    <artwork>
+ 0 1 2 3 4 5 6 7 
++-+-+-+-+-+-+-+-+
+|L|             |
++-+-+-+-+-+-+-+-+
+
+where: </artwork>
+                  </figure><list style="hanging">
+                    <t>L-bit - If the L bit is set, then the value of the
+                    attribute is 'loose.' Otherwise, the value of the
+                    attribute is 'strict.'</t>
+                  </list></t>
+
+                <t>IPv4 Address - the address of the explicit route hop.</t>
+              </list></t>
+          </section>
+
+          <section anchor="UNNERO" title="Unnumbered Interface ID ERO TLV">
+            <t>Unnumbered Interface ID ERO TLV is a Sub-TLV of the SID/Lable
+            Binding TLV.</t>
+
+            <t>The appearance and semantics of the 'Unnumbered Interface ID'
+            have been borrowed from <xref target="RFC3477"/>.</t>
+
+            <t>The Unnumbered Interface-ID ERO TLV (Type 9) describes a path
+            segment that spans over an unnumbered interface. Unnumbered
+            interfaces are referenced using the interface index. Interface
+            indices are assigned local to the router and therefore not unique
+            within a domain. All elements in an ERO path need to be unique
+            within a domain and hence need to be disambiguated using a domain
+            unique Router-ID. <figure
+                title="Unnumbered Interface ID ERO TLV format">
+                <artwork> 
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Type             |             Length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Flags       |                  Reserved                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Router ID                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Interface ID                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+where:</artwork>
+              </figure><list style="hanging">
+                <t>Type: TBA</t>
+
+                <t>Length: 12 bytes</t>
+
+                <t>Flags: 1 octet field of following flags:<figure
+                    align="center">
+                    <artwork>
+ 0 1 2 3 4 5 6 7 
++-+-+-+-+-+-+-+-+
+|L|             |
++-+-+-+-+-+-+-+-+
+
+where: </artwork>
+                  </figure><list style="hanging">
+                    <t>L-bit - If the L bit is set, then the value of the
+                    attribute is 'loose.' Otherwise, the value of the
+                    attribute is 'strict.'</t>
+                  </list></t>
+
+                <t>Router-ID: Router-ID of the next-hop.</t>
+
+                <t>Interface ID: is the identifier assigned to the link by the
+                router specified by the Router-ID.</t>
+              </list></t>
+          </section>
+
+          <section anchor="IPV4BERO" title="IPv4 Prefix Backup ERO TLV">
+            <t>IPv4 Prefix Backup ERO TLV is a Sub-TLV of the SID/Lable
+            Binding TLV.</t>
+
+            <t>The IPv4 Backup ERO TLV describes a path segment using IPv4
+            Prefix style of encoding. Its appearance and semantics have been
+            borrowed from <xref target="RFC3209"/>.<figure
+                title="IPv4 Prefix ERO TLV format">
+                <artwork> 
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Type             |             Length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Flags       |             Reserved                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     IPv4 Address (4 octets)                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+where:</artwork>
+              </figure><list style="hanging">
+                <t>Type: TBA</t>
+
+                <t>Length: 8 bytes</t>
+
+                <t>Flags: 1 octet field of following flags:<figure
+                    align="center">
+                    <artwork>
+ 0 1 2 3 4 5 6 7 
++-+-+-+-+-+-+-+-+
+|L|             |
++-+-+-+-+-+-+-+-+
+
+where: </artwork>
+                  </figure><list style="hanging">
+                    <t>L-bit - If the L bit is set, then the value of the
+                    attribute is 'loose.' Otherwise, the value of the
+                    attribute is 'strict.'</t>
+                  </list></t>
+
+                <t>IPv4 Address - the address of the explicit route hop.</t>
+              </list></t>
+          </section>
+
+          <section anchor="UNNBERO"
+                   title="Unnumbered Interface ID Backup ERO TLV">
+            <t>Unnumbered Interface ID Backup TLV is a Sub-TLV of the
+            SID/Lable Binding TLV.</t>
+
+            <t>The appearance and semantics of the 'Unnumbered Interface ID'
+            have been borrowed from <xref target="RFC3477"/>.</t>
+
+            <t>The Unnumbered Interface-ID ERO TLV (Type 9) describes a path
+            segment that spans over an unnumbered interface. Unnumbered
+            interfaces are referenced using the interface index. Interface
+            indices are assigned local to the router and therefore not unique
+            within a domain. All elements in an ERO path need to be unique
+            within a domain and hence need to be disambiguated using a domain
+            unique Router-ID. <figure
+                title="Unnumbered Interface ID Backup ERO TLV format">
+                <artwork> 
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|              Type             |             Length            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Flags       |                  Reserved                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Router ID                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Interface ID                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+where:</artwork>
+              </figure><list style="hanging">
+                <t>Type: TBA</t>
+
+                <t>Length: 12 bytes</t>
+
+                <t>Flags: 1 octet field of following flags:<figure
+                    align="center">
+                    <artwork>
+ 0 1 2 3 4 5 6 7 
++-+-+-+-+-+-+-+-+
+|L|             |
++-+-+-+-+-+-+-+-+
+
+where: </artwork>
+                  </figure><list style="hanging">
+                    <t>L-bit - If the L bit is set, then the value of the
+                    attribute is 'loose.' Otherwise, the value of the
+                    attribute is 'strict.'</t>
+                  </list></t>
+
+                <t>Router-ID: Router-ID of the next-hop.</t>
+
+                <t>Interface ID: is the identifier assigned to the link by the
+                router specified by the Router-ID.</t>
+              </list></t>
+          </section>
+        </section>
+      </section>
+    </section>
+
+    <section anchor="ADJSID" title="Adjacency Segment Identifier (Adj-SID)">
+      <t>An Adjacency Segment Identifier (Adj-SID) represents a router
+      adjacency in Segment Routing. At the current stage of Segment Routing
+      architecture it is assumed that the Adj-SID value has local significance
+      (to the router).</t>
+
+      <section title="OSPFv2 Extended Link Opaque LSA ">
+        <t>A new Opaque LSA (defined in <xref target="RFC5250"/> is defined in
+        OSPFv2 in order to advertise additional link attributes: the OSPFv2
+        Extended Link Opaque LSA.</t>
+
+        <t>The OSPFv2 Extended Link Opaque LSA has an area flooding scope.
+        Multiple OSPFv2 Extended Link Opaque LSAs can be advertised by a
+        single router in an area.</t>
+
+        <t>The format of the OSPFv2 Extended Link Opaque LSA is as follows:
+        <figure>
+            <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |            LS age             |     Options   |       10      |
@@ -485,40 +772,42 @@ where:</artwork>
 |                                                               |
 +-                            TLVs                             -+
 |                             ...                               |</artwork>
-            </figure></t>
+          </figure></t>
 
-          <t>The format of the TLVs within the body of LSA is the same as the
-          format used by the Traffic Engineering Extensions to OSPF defined in
-          <xref target="RFC3630"></xref>. The LSA payload consists of one or
-          more nested Type/Length/Value (TLV) triplets. The format of each TLV
-          is:</t>
+        <t>The format of the TLVs within the body of LSA is the same as the
+        format used by the Traffic Engineering Extensions to OSPF defined in
+        <xref target="RFC3630"/>. The LSA payload consists of one or more
+        nested Type/Length/Value (TLV) triplets. The format of each TLV
+        is:</t>
 
-          <figure>
-            <artwork> 0                   1                   2                   3
+        <figure>
+          <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                            Value...                           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</artwork>
-          </figure>
+        </figure>
 
-          <t>The Length field defines the length of the value portion in
-          octets. The TLV is padded to 4-octet alignment; padding is not
-          included in the length field. Nested TLVs are also 32-bit aligned.
-          Unrecognized types are ignored.</t>
-        </section>
+        <t>The Length field defines the length of the value portion in octets.
+        The TLV is padded to 4-octet alignment; padding is not included in the
+        length field. Nested TLVs are also 32-bit aligned. Unrecognized types
+        are ignored.</t>
+      </section>
 
-        <section title="OSPFv2 Extended Link TLV">
-          <t>OSPFv2 Extended Link TLV is used in order to advertise various
-          attributes of the link. It describes a single link and is
-          constructed of a set of Sub-TLVs. There are no ordering requirements
-          for the Sub-TLVs. Only one Extended Link TLV SHALL be carried in
-          each Extended Link Opaque LSA, allowing for fine granularity changes
-          in the topology.</t>
+      <section title="OSPFv2 Extended Link TLV">
+        <t>OSPFv2 Extended Link TLV is used in order to advertise various
+        attributes of the link. It describes a single link and is constructed
+        of a set of Sub-TLVs. There are no ordering requirements for the
+        Sub-TLVs. Only one Extended Link TLV SHALL be carried in each Extended
+        Link Opaque LSA, allowing for fine granularity changes in the
+        topology.</t>
 
-          <t>The Extended Link TLV has following format:<figure>
-              <artwork> 0                   1                   2                   3
+        <t>The Extended Link TLV has following format:<figure>
+            <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
@@ -534,193 +823,181 @@ where:</artwork>
 |                                                               |
 
 where:</artwork>
-            </figure><list>
-              <t>Type is TBA.</t>
+          </figure><list>
+            <t>Type is TBA.</t>
 
-              <t>Length is variable.</t>
+            <t>Length is variable.</t>
 
-              <t>Link-Type: as defined in section A.4.2 of <xref
-              target="RFC2328"></xref>.</t>
+            <t>Link-Type: as defined in section A.4.2 of <xref
+            target="RFC2328"/>.</t>
 
-              <t>Link-ID: as defined in section A.4.2 of <xref
-              target="RFC2328"></xref>.</t>
+            <t>Link-ID: as defined in section A.4.2 of <xref
+            target="RFC2328"/>.</t>
 
-              <t>Link Data: as defined in section A.4.2 of <xref
-              target="RFC2328"></xref>.</t>
-            </list></t>
-        </section>
+            <t>Link Data: as defined in section A.4.2 of <xref
+            target="RFC2328"/>.</t>
+          </list></t>
+      </section>
 
-        <section title="Adj-SID sub-TLV">
-          <t>Adj-SID is an optional Sub-TLV of the Extended Link TLV. It MAY
-          appear multiple times in Extended Link TLV. Examples where more than
-          one Adj-SID may be used per neighbor are described in <xref
-          target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>.
-          The structure of the Adj-SID Sub-TLV is as follows: <figure>
-              <artwork> 0                   1                   2                   3
+      <section anchor="ADJSIDSUBTLV" title="Adj-SID sub-TLV">
+        <t>Adj-SID is an optional Sub-TLV of the Extended Link TLV. It MAY
+        appear multiple times in Extended Link TLV. Examples where more than
+        one Adj-SID may be used per neighbor are described in <xref
+        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>. The
+        structure of the Adj-SID Sub-TLV is as follows: <figure>
+            <artwork> 
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   MT-ID         | Reserved    |            Flags              |
+|     Flags     |   MT-ID       |  Weight       |   Reserved    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Adjacency SID                         |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Neighbor ID   (optional)              |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Adjacency SID (optional)              |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-                                    ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Neighbor ID   (optional)              |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Adjacency SID (optional)              |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Sub-TLVs (variable)                   |
++-                                                             -+
+|                                                               |
 
 where:</artwork>
-            </figure><list style="hanging">
-              <t>Type is TBA.</t>
+          </figure><list style="hanging">
+            <t>Type: TBA.</t>
 
-              <t>Length is variable.</t>
+            <t>Length: variable.</t>
 
-              <t>MT-ID: Multi-Topology ID (as defined in <xref
-              target="RFC4915"></xref>.</t>
-
-              <t>Flags: 2 octets field of following flags: <figure>
-                  <artwork> 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|F|G|S|T|                       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            <t>Flags. 1 octet field of following flags:<figure align="center">
+                <artwork>    
+ 0 1 2 3 4 5 6 7 
++-+-+-+-+-+-+-+-+
+|B|             |
++-+-+-+-+-+-+-+-+
 
 where:</artwork>
-                </figure><list>
-                  <t>F-Flag: FA flag. If set, then Adj-SID refers to a
-                  Forwarding Adjacency.</t>
+              </figure><list style="hanging">
+                <t>B-Flag: Backup-flag: set if the Adj-SID refer to an
+                adjacency being protected (e.g.: using IPFRR or MPLS-FRR) as
+                described in <xref
+                target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
 
-                  <t>G-Flag: Global flag. When set, the SID value has global
-                  significance which means the SID has been allocated from the
-                  Segment Routing Global Block (SRGB) as described in <xref
-                  target="draft-filsfils-rtgwg-segment-routing-00"></xref>.
-                  When unset, the SID value has local (within the router)
-                  significance which means the SID has NOT been allocated from
-                  the SRGB. When the Adj-SID Sub-TLV carries the IGP Adjacency
-                  SID, then the G-Flag MUST be unset.</t>
+                <t>Other bits: MUST be zero when originated and ignored when
+                received.</t>
+              </list></t>
 
-                  <t>S-Flag: Secondary SID. If set the SID represents the
-                  secondary SID. One case where secondary SID may be useful is
-                  the parallel adjacency case as described in <xref
-                  target="draft-filsfils-rtgwg-segment-routing-00"></xref>.</t>
+            <t>MT-ID: Multi-Topology ID (as defined in <xref
+            target="RFC4915"/>.</t>
 
-                  <t>T-Flag: Protected-flag: set if the Adj-SID refer to an
-                  adjacency being protected (e.g.: using IPFRR or MPLS-FRR) as
-                  described in <xref
-                  target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>.</t>
+            <t>Weight: weight used for load-balancing purposes. The use of the
+            weight is defined in <xref
+            target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
 
-                  <t>Other bits: MUST be zero when originated and ignored when
-                  received.</t>
-                </list></t>
+            <t>Adj-SID Sub-TLV supports following Sub-TLVs:<list
+                style="hanging">
+                <t>SID/Label TLV as described in <xref target="SIDLABEL"/>.
+                This TLV MUST appear in the Adj-SID Sub-TLV and it MUST only
+                appear once.</t>
+              </list></t>
+          </list></t>
 
-              <t>Adj-SID: the 32 bits of Adjacency Segment Identifier.</t>
+        <t>A SR capable router MAY allocate an Adj-SID for each of its
+        adjacencies and set the B-Flag when the adjacency is protected by a
+        FRR mechanism (IP or MPLS) as described in <xref
+        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
+      </section>
 
-              <t>Neighbor ID: the Neighbor ID on broadcast segment to which
-              the SID belongs. Only used if more then one SID is advertised in
-              the Adj-SID Sub-TLV.</t>
-            </list></t>
-
-          <t>The first Adjacency SID value in TLV is mandatory and advertises
-          the Adjacency Segment Identifier for the neighbor that is identified
-          by the Extended Link TLV itself. Subsequent Neighbor ID/Adjacency
-          SID tuples are optional and represent Adj-SIDs for other neighbors
-          on the broadcast segment.</t>
-
-          <t>A SR capable router SHOULD allocate an Adj-SID for each of its
-          adjacencies and set the T-Flag when the adjacency is protected by a
-          FRR mechanism (IP or MPLS) as described in <xref
-          target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>.</t>
-        </section>
-
-        <section title="Explicit Path sub-TLV">
-          <t>Explicit Path Sub-TLV is a Sub-TLV of the Extended Link TLV. The
-          structure of the Explicit Path Sub-TLV is as follows: <figure>
-              <artwork> 0                   1                   2                   3
+      <section anchor="LANADJSIDSUBTLV" title="LAN Adj-SID/Label Sub-TLV">
+        <t>LAN Adj-SID is an optional Sub-TLV of the Extended Link TLV. It MAY
+        appear multiple times in Extended Link TLV. It is used to advertise
+        SID/Label for adjacency on broadcast or NBMA network to adjacent node
+        that is not a Designated Router on the network. <figure>
+            <artwork>
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|              Type            |              Length            |
+|              Type             |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Flags      |    MT-ID      |      Reserved               |
+|     Flags     |    MT-ID      |    Weight     |   Reserved    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                     Explicit Route Hop #1                     |
+|                        Neighbor ID                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                     Explicit Route Hop #...                   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Sub-TLVs (variable)                   |
++-                                                             -+
+|                                                               |
 
 where:</artwork>
-            </figure><list style="hanging">
-              <t>Type is TBA.</t>
+          </figure><list style="hanging">
+            <t>Type: TBA.</t>
 
-              <t>Length is variable.</t>
+            <t>Length: variable.</t>
 
-              <t>Flags: 16-bit flag field where following flags are defined:
-              <figure>
-                  <artwork> 0 1 2 3 4 5 6 7
+            <t>Flags. 1 octet field of following flags:<figure align="center">
+                <artwork>    
+ 0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
-|R|             |
+|B|             |
 +-+-+-+-+-+-+-+-+
 
 where:</artwork>
-                </figure><list style="hanging">
-                  <t>R-Flag: Segment Routing flag. When set, the content of
-                  the Explicit Route Object contains SIDs.</t>
-                </list></t>
+              </figure><list style="hanging">
+                <t>B-Flag: Backup-flag: set if the LAN-Adj-SID refer to an
+                adjacency being protected (e.g.: using IPFRR or MPLS-FRR) as
+                described in <xref
+                target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
 
-              <t>MT-ID: the Multi-Topology ID (as defined in <xref
-              target="RFC4915"></xref>.</t>
+                <t>Other bits: MUST be zero when originated and ignored when
+                received.</t>
+              </list></t>
 
-              <t>Explicit Route Hop: the address of the explicit route hop.
-              IPv4 and SR hops are encoded using a 32 bit value.</t>
-            </list></t>
-        </section>
+            <t>MT-ID: Multi-Topology ID (as defined in <xref
+            target="RFC4915"/>.</t>
+
+            <t>Weight: weight used for load-balancing purposes. The use of the
+            weight is defined in <xref
+            target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
+
+            <t>LAN Adj-SID Sub-TLV supports following Sub-TLVs:<list
+                style="hanging">
+                <t>SID/Label TLV as described in <xref target="SIDLABEL"/>.
+                This TLV MUST appear in the Adj-SID Sub-TLV and it MUST only
+                appear once.</t>
+              </list></t>
+          </list></t>
       </section>
     </section>
 
     <section title="Elements of Procedure">
       <section title="Intra-area Segment routing in OSPFv2 ">
-        <t>The OSPFv2 node that supports segment routing MAY advertise
-        Prefix-SIDs for any prefix that is advertising reachability to (e.g.
-        loopback IP address) as described in <xref target="NODESID"></xref>.
-        If multiple routers advertise Prefix-SID for the same prefix, then the
-        Prefix-SID MUST be the same. This is required in order to allow
+        <t>The OSPFv2 node that supports segment routing MAY advertise Prefix-
+        SIDs for any prefix that it is advertising reachability for (e.g.
+        loopback IP address) as described in <xref target="PREFIXSID"/>.</t>
+
+        <t>If multiple routers advertise Prefix-SID for the same prefix, then
+        the Prefix-SID MUST be the same. This is required in order to allow
         traffic load-balancing if multiple equal cost paths to the destination
         exist in the network.</t>
 
-        <t>Prefix-SID can also be advertised by the SR Mapping Servers
-        functionality (as described in <xref
-        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>)
-        that advertise Prefix-SID for remote prefixes which exist in the
-        network. Multiple SR Mapping Servers can advertise Prefix-SID for the
+        <t>Prefix-SID can also be advertised by the SR Mapping Servers (as
+        described in <xref
+        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>). The
+        Mapping Server advertise Prefix-SID for remote prefixes that exist in
+        the network. Multiple Mapping Servers can advertise Prefix-SID for the
         same prefix, in which case the same Prefix-SID MUST be advertised by
         all of them. Flooding scope of the OSPF Extended Prefix Opaque LSA
         that is generated by the SR Mapping Server could be either area scope
         or autonomous system scope and is decided based on the configuration
         of the SR Mapping Server.</t>
-
-        <t>Prefix-SID advertisements do not contribute to the prefix
-        reachability.</t>
       </section>
 
       <section title="Inter-area Segment routing in OSPFv2">
         <t>In order to support SR in a multi-area environment, OSPFv2 must
-        propagate SR information between areas. The following procedure is
-        used in order to propagate Prefix SIDs between areas.</t>
+        propagate Prefix-SID information between areas. The following
+        procedure is used in order to propagate Prefix SIDs between areas.</t>
 
         <t>When an OSPF ABR advertises a Type-3 Summary LSA from an intra-area
-        route to all its connected areas, it will also originate an Extended
-        Prefix Opaque LSA, as described in <xref target="NODESID"></xref>. The
+        prefix to all its connected areas, it will also originate an Extended
+        Prefix Opaque LSA, as described in <xref target="EXTPXLSA"/>. The
         flooding scope of the Extended Prefix Opaque LSA type will be set to
         area-scope. The route-type in OSPF Extended Prefix TLV is set to
         inter-area. The Prefix-SID Sub-TLV will be included in this LSA and
-        the Prefix-SID value will be set as follows:<list style="hanging">
-            <t>The ABR will look at it's best path to the prefix in the source
+        the Prefix-SID value will be set as follows: <list style="hanging">
+            <t>The ABR will look at its best path to the prefix in the source
             area and find out the advertising router associated with its best
             path to that prefix.</t>
 
@@ -729,17 +1006,17 @@ where:</artwork>
             prefix, then the ABR will use the Prefix-SID advertised by any
             other router (e.g.: a Prefix-SID coming from an SR Mapping Server
             as defined in <xref
-            target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>)
-            when propagating Prefix-SID for the prefix to other areas.</t>
+            target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>) when
+            propagating Prefix-SID for the prefix to other areas.</t>
           </list></t>
 
         <t>When an OSPF ABR advertises Type-3 Summary LSAs from an inter-area
         route to all its connected areas it will also originate an Extended
-        Prefix Opaque LSA, as described in <xref target="NODESID"></xref>. The
+        Prefix Opaque LSA, as described in <xref target="EXTPXLSA"/>The
         flooding scope of the Extended Prefix Opaque LSA type will be set to
         area-scope. The route-type in OSPF Extended Prefix TLV is set to
         inter-area. The Prefix-SID Sub-TLV will be included in this LSA and
-        the Prefix-SID will be set as follows:<list style="hanging">
+        the Prefix-SID will be set as follows: <list style="hanging">
             <t>The ABR will look at its best path to the prefix in the source
             area and find out the advertising router associated with its best
             path to that prefix.</t>
@@ -753,20 +1030,19 @@ where:</artwork>
             the originating ABR will use the Prefix-SID advertised by any
             other router (e.g.: a Prefix-SID coming from an SR Mapping Server
             as defined in <xref
-            target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>)
-            when propagating Prefix-SID for the prefix to other areas.</t>
+            target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>) when
+            propagating Prefix-SID for the prefix to other areas.</t>
           </list></t>
       </section>
 
       <section title="SID for External Prefixes">
         <t>Type-5 LSAs are flooded domain wide. When an ASBR, which supports
         SR, generates Type-5 LSAs, it should also originate Extended Prefix
-        Opaque LSAs, as described in <xref target="NODESID"></xref>. The
-        flooding scope of the Extended Prefix Opaque LSA type is set to
-        AS-scope. The route-type in OSPF Extended Prefix TLV is set to
-        external. Prefix-SID Sub-TLV is included in this LSA and the
-        Prefix-SID value will be set to the SID that has been reserved for
-        that prefix.</t>
+        Opaque LSAs, as described in <xref target="EXTPXLSA"/>The flooding
+        scope of the Extended Prefix Opaque LSA type is set to AS-scope. The
+        route-type in OSPF Extended Prefix TLV is set to external. Prefix-SID
+        Sub-TLV is included in this LSA and the Prefix-SID value will be set
+        to the SID that has been reserved for that prefix.</t>
 
         <t>When a NSSA ASBR translates Type-7 LSAs into Type-5 LSAs, it should
         also advertise the Prefix-SID for the prefix. The NSSA ABR determines
@@ -777,48 +1053,39 @@ where:</artwork>
         prefix. Otherwise the Prefix-SID advertised by any other router will
         be used (e.g.: a Prefix-SID coming from an SR Mapping Server as
         defined in <xref
-        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"></xref>).</t>
+        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>).</t>
       </section>
 
       <section title="Advertisement of Adj-SID">
         <t>The Adjacency Segment Routing Identifier (Adj-SID) is advertised
-        using the Adj-SID Sub-TLV as described in <xref
-        target="ADJSID"></xref>.</t>
+        using the Adj-SID Sub-TLV as described in <xref target="ADJSID"/>.</t>
 
         <section title="Advertisement of Adj-SID on Point-to-Point Links">
-          <t>The Adj-SID MUST be advertised for any adjacency on a p2p link
-          that is in a FULL state. Adj-SID MAY be advertised for any adjacency
-          on p2p link that is in a state 2-Way or higher. If the adjacency on
-          a p2p link transitions from the FULL state, then the Adj-SID for
-          that adjacency MAY be removed from the area. If the adjacency
-          transitions to a state lower then 2-Way, then the Adj-SID MUST be
-          removed from the area.</t>
+          <t>Adj-SID MAY be advertised for any adjacency on p2p link that is
+          in a state 2-Way or higher. If the adjacency on a p2p link
+          transitions from the FULL state, then the Adj-SID for that adjacency
+          MAY be removed from the area. If the adjacency transitions to a
+          state lower then 2-Way, then the Adj-SID MUST be removed from the
+          area.</t>
         </section>
 
-        <section title="Adjacency SID on Broadcast Interfaces">
-          <t>Broadcast networks in OSPF are represented by a star topology
-          where the Designated Router (DR) is the central point all other
-          routers on the broadcast network connect to. As a result, the
-          routers on the broadcast network advertise only their adjacency to
-          DR and BDR. Routers that are neither DR nor BDR do not form, and do
-          not advertise, adjacencies between them. They, however, maintain a
-          2-Way state between them.</t>
+        <section title="Adjacency SID on Broadcast or NBMA Interfaces">
+          <t>Broadcast or NBMA networks in OSPF are represented by a star
+          topology where the Designated Router (DR) is the central point all
+          other routers on the broadcast network connect to. As a result, the
+          routers on the broadcast or NBMA network advertise only their
+          adjacency to DR and BDR. Routers that are neither DR nor BDR do not
+          form and do not advertise adjacencies between them. They, however,
+          maintain a 2-Way adjacency state between them.</t>
 
-          <t>When Segment Routing is used, each router in the broadcast
-          segment must advertise the Adj-SID for each of its neighbors. To
-          satisfy this requirement Adj-SID on broadcast networks are
-          advertised as follows:</t>
+          <t>When Segment Routing is used, each router on the broadcast
+          segment MAY advertise the Adj-SID for its adjacency to DR using
+          Adj-SID Sub-TLV as described in <xref target="ADJSIDSUBTLV"/>.</t>
 
-          <t>If the router is acting as DR on a broadcast segment, the Adj-SID
-          MUST be advertised for each adjacency in a FULL state and MAY be
-          advertised for any adjacency in a state 2-way or higher. When the DR
-          advertises the Adj-SID Sub-TLV for the broadcast link, the first
-          Adj-SID in the Adj-SID sub-TLV corresponds to the adjacency of DR to
-          itself and as such MUST be set to zero and ignored.</t>
-
-          <t>If the router is acting as BDR or as DR-Other, then the Adj-SID
-          MUST be advertised for each adjacency in a state 2-Way or
-          higher.</t>
+          <t>SR capable router MAY also advertise Adj-SID for other neighbors
+          (e.g. BDR, DR-OTHER) on broadcast or NBMA network using the LAN
+          ADJ-SID Sub-TLV as described in section 5.1.1.2. <xref
+          target="LANADJSIDSUBTLV"/>.</t>
         </section>
       </section>
     </section>
@@ -846,6 +1113,10 @@ where:</artwork>
     <references title="Normative References">
       <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
 
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3209.xml"?>
+
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3477.xml"?>
+
       <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3630.xml"?>
 
       <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5250.xml"?>
@@ -864,12 +1135,12 @@ where:</artwork>
         <front>
           <title>Segment Routing</title>
 
-          <author fullname="Stefano Previdi" initials="S." surname="Previdi"></author>
+          <author fullname="Stefano Previdi" initials="S." surname="Previdi"/>
 
           <author fullname="Clarence Filsfils" initials="C."
-                  surname="Filsfils"></author>
+                  surname="Filsfils"/>
 
-          <date day="20" month="May" year="2013" />
+          <date day="20" month="May" year="2013"/>
         </front>
       </reference>
 
@@ -878,9 +1149,9 @@ where:</artwork>
           <title>Segment Routing Use Cases</title>
 
           <author fullname="Clarence Filsfils" initials="C."
-                  surname="Filsfils"></author>
+                  surname="Filsfils"/>
 
-          <date day="20" month="May" year="2013" />
+          <date day="20" month="May" year="2013"/>
         </front>
       </reference>
 
