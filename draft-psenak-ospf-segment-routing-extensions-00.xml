@@ -116,7 +116,14 @@
 
     <date day="28" month="June" year="2013"/>
 
-    <workgroup>Network Working Group</workgroup>
+    <area>Routing</area>
+    <workgroup>Open Shortest Path First IGP</workgroup>
+    <keyword>MPLS</keyword>
+    <keyword>SID</keyword>
+    <keyword>IGP</keyword>
+    <keyword>OSPF</keyword>
+    <keyword>Label advertisement</keyword>
+    <keyword>Segment Routing</keyword>
 
     <abstract>
       <t>Segment Routing (SR) allows for a flexible definition of end-to-end
