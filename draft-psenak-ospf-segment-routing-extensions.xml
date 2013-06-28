@@ -263,7 +263,7 @@ where:</artwork>
         SR-Algorithm TLV propagation area scope flooding is required.</t>
       </section>
 
-      <section anchor="SIDRANGE" title="SID/Label Range Sub-TLV">
+      <section anchor="SIDRANGE" title="SID/Label Range TLV">
         <t>The SID/Label Range TLV is a TLV of Router Information Opaque LSA
         (defined in <xref target="RFC4970"/>).</t>
 
