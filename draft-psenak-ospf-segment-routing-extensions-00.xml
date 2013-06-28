@@ -914,7 +914,7 @@ where:</artwork>
       <section anchor="LANADJSIDSUBTLV" title="LAN Adj-SID/Label Sub-TLV">
         <t>LAN Adj-SID is an optional Sub-TLV of the Extended Link TLV. It MAY
         appear multiple times in Extended Link TLV. It is used to advertise
-        SID/Label for adjacency to non-DR node on broadcast or NBMA network.</t>
+        SID/Label for adjacency to non-DR node on broadcast or NBMA network.
         <figure>
             <artwork>
  0                   1                   2                   3
