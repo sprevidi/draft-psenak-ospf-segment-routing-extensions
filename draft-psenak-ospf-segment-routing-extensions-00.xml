@@ -117,12 +117,19 @@
     <date day="28" month="June" year="2013"/>
 
     <area>Routing</area>
+
     <workgroup>Open Shortest Path First IGP</workgroup>
+
     <keyword>MPLS</keyword>
+
     <keyword>SID</keyword>
+
     <keyword>IGP</keyword>
+
     <keyword>OSPF</keyword>
+
     <keyword>Label advertisement</keyword>
+
     <keyword>Segment Routing</keyword>
 
     <abstract>
@@ -540,16 +547,12 @@ where:</artwork>
           <t>All Backup ERO TLVs must immediately follow last ERO Sub-TLV.</t>
 
           <section anchor="IPV4ERO" title="IPv4 ERO TLV">
-            <t>IPv4 ERO TLV is a Sub-TLV of the SID/Lable Binding
-            TLV.</t>
+            <t>IPv4 ERO TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
 
-            <t>The IPv4 ERO TLV (Type: TBA) describes a path segment
-	    using IPv4 Address style of encoding.
-	    Its semantics have been borrowed
-            from <xref target="RFC3209"/>.
-
-	    <figure title="IPv4 ERO TLV format">
-	      <artwork>
+            <t>The IPv4 ERO TLV (Type: TBA) describes a path segment using
+            IPv4 Address style of encoding. Its semantics have been borrowed
+            from <xref target="RFC3209"/>. <figure title="IPv4 ERO TLV format">
+                <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -560,28 +563,24 @@ where:</artwork>
 |                     IPv4 Address (4 octets)                   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	      </artwork>
-	    </figure>
-	    where:
-	    <list style="hanging">
+              </figure> where: <list style="hanging">
                 <t>Type: TBA</t>
 
                 <t>Length: 8 bytes</t>
 
-                <t>Flags: 1 octet field of following flags:
-		<figure align="center">
-		  <artwork>
+                <t>Flags: 1 octet field of following flags: <figure
+                    align="center">
+                    <artwork>
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
 |L|             |
 +-+-+-+-+-+-+-+-+
 		  </artwork>
-		</figure>
-		where:
-		<list style="hanging">
-		  <t>L-bit - If the L bit is set, then the value of the
-		  attribute is 'loose.' Otherwise, the value of the
-		  attribute is 'strict.'</t>
-		</list></t>
+                  </figure> where: <list style="hanging">
+                    <t>L-bit - If the L bit is set, then the value of the
+                    attribute is 'loose.' Otherwise, the value of the
+                    attribute is 'strict.'</t>
+                  </list></t>
 
                 <t>IPv4 Address - the address of the explicit route hop.</t>
               </list></t>
@@ -648,9 +647,9 @@ where: </artwork>
             Binding TLV.</t>
 
             <t>The IPv4 Backup ERO TLV describes a path segment using IPv4
-            Address style of encoding. Its semantics have been
-            borrowed from <xref target="RFC3209"/>.
-	    <figure title="IPv4 Backup ERO TLV format">
+            Address style of encoding. Its semantics have been borrowed from
+            <xref target="RFC3209"/>. <figure
+                title="IPv4 Backup ERO TLV format">
                 <artwork> 
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -662,28 +661,24 @@ where: </artwork>
 |                     IPv4 Address (4 octets)                   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		</artwork>
-	    </figure>
-	    where:
-	    <list style="hanging">
+              </figure> where: <list style="hanging">
                 <t>Type: TBA</t>
 
                 <t>Length: 8 bytes</t>
 
-                <t>Flags: 1 octet field of following flags:
-		<figure align="center">
-		  <artwork>
+                <t>Flags: 1 octet field of following flags: <figure
+                    align="center">
+                    <artwork>
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
 |L|             |
 +-+-+-+-+-+-+-+-+
 		  </artwork>
-		</figure>
-		where:
-		<list style="hanging">
-		  <t>L-bit - If the L bit is set, then the value of the
-		  attribute is 'loose.' Otherwise, the value of the
-		  attribute is 'strict.'</t>
-		</list></t>
+                  </figure> where: <list style="hanging">
+                    <t>L-bit - If the L bit is set, then the value of the
+                    attribute is 'loose.' Otherwise, the value of the
+                    attribute is 'strict.'</t>
+                  </list></t>
 
                 <t>IPv4 Address - the address of the explicit route hop.</t>
               </list></t>
@@ -718,24 +713,20 @@ where: </artwork>
 |                         Interface ID                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		</artwork>
-	      </figure>
-	      where:
-	      <list style="hanging">
+              </figure> where: <list style="hanging">
                 <t>Type: TBA</t>
 
                 <t>Length: 12 bytes</t>
 
-                <t>Flags: 1 octet field of following flags:
-		<figure align="center">
-		  <artwork>
+                <t>Flags: 1 octet field of following flags: <figure
+                    align="center">
+                    <artwork>
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
 |L|             |
 +-+-+-+-+-+-+-+-+
 		  </artwork>
-		</figure>
-		where:
-		<list style="hanging">
+                  </figure> where: <list style="hanging">
                     <t>L-bit - If the L bit is set, then the value of the
                     attribute is 'loose.' Otherwise, the value of the
                     attribute is 'strict.'</t>
@@ -1116,9 +1107,7 @@ where:</artwork>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Anton Smirnov, Dave Ward, Dan Frost, Stewart
-      Bryant, Pierre Francois, Thomas Telkamp and Les Ginsberg for their
-      contribution to the content of this document.</t>
+      <t>We would like to thank Anton Smirnov and Wim Hendricks.</t>
     </section>
   </middle>
 
