@@ -223,11 +223,11 @@ where:
       to be advertised to other routers in the area.</t>
 
       <t>These SR capabilities are advertised in Router Information Opaque LSA
-      (defined in <xref target="RFC4970")/>.</t>
+      (defined in <xref target="RFC4970"/>).</t>
 
       <section anchor="SRALGO" title="SR-Algorithm TLV">
         <t>SR-Algorithm TLV is a TLV of Router Information Opaque LSA (defined
-        in <xref target="RFC4970")/>.</t>
+        in <xref target="RFC4970"/>).</t>
 
         <t>Router may use various algorithms when calculating reachability to
         other nodes in area or to prefixes attached to these nodes. Examples
@@ -265,7 +265,7 @@ where:</artwork>
 
       <section anchor="SIDRANGE" title="SID/Label Range Sub-TLV">
         <t>The SID/Label Range TLV is a TLV of Router Information Opaque LSA
-        (defined in <xref target="RFC4970")/>.</t>
+        (defined in <xref target="RFC4970"/>).</t>
 
         <t>SID/Label Sub-TLV MAY appear multiple times and has following
         format:<figure>
