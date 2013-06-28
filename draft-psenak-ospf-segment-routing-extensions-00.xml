@@ -223,11 +223,11 @@ where:
       to be advertised to other routers in the area.</t>
 
       <t>These SR capabilities are advertised in Router Information Opaque LSA
-      (defined in <xref target="RFC4970"/>.</t>
+      (defined in <xref target="RFC4970")/>.</t>
 
       <section anchor="SRALGO" title="SR-Algorithm TLV">
         <t>SR-Algorithm TLV is a TLV of Router Information Opaque LSA (defined
-        in <xref target="RFC4970"/>.</t>
+        in <xref target="RFC4970")/>.</t>
 
         <t>Router may use various algorithms when calculating reachability to
         other nodes in area or to prefixes attached to these nodes. Examples
@@ -265,7 +265,7 @@ where:</artwork>
 
       <section anchor="SIDRANGE" title="SID/Label Range Sub-TLV">
         <t>The SID/Label Range TLV is a TLV of Router Information Opaque LSA
-        (defined in <xref target="RFC4970"/>.</t>
+        (defined in <xref target="RFC4970")/>.</t>
 
         <t>SID/Label Sub-TLV MAY appear multiple times and has following
         format:<figure>
@@ -320,7 +320,7 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |            LS age             |     Options   |  9, 10, or 11 |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Opaque type  |                  Instance                   |
+|  Opaque type  |                  Instance                   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                     Advertising Router                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -332,6 +332,8 @@ where:</artwork>
 +-                            TLVs                             -+
 |                             ...                               |</artwork>
         </figure></t>
+
+      <t>Opaque type used by OSPFv2 Extended Prefix Opaque LSA is TBA.</t>
 
       <t>The format of the TLVs within the body of the LSA is the same as the
       format used by the Traffic Engineering Extensions to OSPF defined in
@@ -382,10 +384,12 @@ where: </artwork>
             <t>Length is variable</t>
 
             <t>Route type: type of the OSPF route. Supported types are:<figure>
-                <artwork>   1 - intra-area
-   3 - inter-area
-   5 - external
-   7 - NSSA external</artwork>
+                <artwork>
+                0 - unspecified
+                1 - intra-area
+                3 - inter-area
+                5 - external
+                7 - NSSA external</artwork>
               </figure>If the route type is 0 (unspecified) the information
             inside the OSPF External Prefix TLV applies to the prefix
             regardless of what route-type it is. This is useful when some
@@ -413,14 +417,14 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Flags    |    MT-ID      |Algorithm  |      Reserved     | 
+|      Flags    |    MT-ID      |    Algorithm  |    Reserved   | 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                           Index                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type is TBA.</t>
+            <t>Type: TBA.</t>
 
             <t>Length: A 16-bit field that indicates the length of the value
             portion in octets. Set to 8.</t>
@@ -549,7 +553,7 @@ where:</artwork>
           <section anchor="IPV4ERO" title="IPv4 ERO TLV">
             <t>IPv4 ERO TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
 
-            <t>The IPv4 ERO TLV (Type: TBA) describes a path segment using
+            <t>The IPv4 ERO TLV describes a path segment using
             IPv4 Address style of encoding. Its semantics have been borrowed
             from <xref target="RFC3209"/>. <figure title="IPv4 ERO TLV format">
                 <artwork>
@@ -593,7 +597,7 @@ where:</artwork>
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV (Type TBA) describes a path
+            <t>The Unnumbered Interface-ID ERO TLV describes a path
             segment that spans over an unnumbered interface. Unnumbered
             interfaces are referenced using the interface index. Interface
             indices are assigned local to the router and therefore not unique
@@ -692,7 +696,7 @@ where: </artwork>
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV (Type TBA) describes a path
+            <t>The Unnumbered Interface-ID ERO TLV describes a path
             segment that spans over an unnumbered interface. Unnumbered
             interfaces are referenced using the interface index. Interface
             indices are assigned local to the router and therefore not unique
@@ -777,6 +781,7 @@ where: </artwork>
 +-                            TLVs                             -+
 |                             ...                               |</artwork>
           </figure></t>
+        <t>Opaque type used by OSPFv2 Extended Link Opaque LSA is TBA</t>
 
         <t>The format of the TLVs within the body of LSA is the same as the
         format used by the Traffic Engineering Extensions to OSPF defined in
@@ -909,8 +914,8 @@ where:</artwork>
       <section anchor="LANADJSIDSUBTLV" title="LAN Adj-SID/Label Sub-TLV">
         <t>LAN Adj-SID is an optional Sub-TLV of the Extended Link TLV. It MAY
         appear multiple times in Extended Link TLV. It is used to advertise
-        SID/Label for adjacency on broadcast or NBMA network to adjacent node
-        that is not a Designated Router on the network. <figure>
+        SID/Label for adjacency to non-DR node on broadcast or NBMA network.</t>
+        <figure>
             <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1016,7 +1021,7 @@ where:</artwork>
 
         <t>When an OSPF ABR advertises Type-3 Summary LSAs from an inter-area
         route to all its connected areas it will also originate an Extended
-        Prefix Opaque LSA, as described in <xref target="EXTPXLSA"/>The
+        Prefix Opaque LSA, as described in <xref target="EXTPXLSA"/>. The
         flooding scope of the Extended Prefix Opaque LSA type will be set to
         area-scope. The route-type in OSPF Extended Prefix TLV is set to
         inter-area. The Prefix-SID Sub-TLV will be included in this LSA and
@@ -1042,7 +1047,7 @@ where:</artwork>
       <section title="SID for External Prefixes">
         <t>Type-5 LSAs are flooded domain wide. When an ASBR, which supports
         SR, generates Type-5 LSAs, it should also originate Extended Prefix
-        Opaque LSAs, as described in <xref target="EXTPXLSA"/>The flooding
+        Opaque LSAs, as described in <xref target="EXTPXLSA"/>. The flooding
         scope of the Extended Prefix Opaque LSA type is set to AS-scope. The
         route-type in OSPF Extended Prefix TLV is set to external. Prefix-SID
         Sub-TLV is included in this LSA and the Prefix-SID value will be set
@@ -1076,14 +1081,14 @@ where:</artwork>
         <section title="Adjacency SID on Broadcast or NBMA Interfaces">
           <t>Broadcast or NBMA networks in OSPF are represented by a star
           topology where the Designated Router (DR) is the central point all
-          other routers on the broadcast network connect to. As a result, the
-          routers on the broadcast or NBMA network advertise only their
-          adjacency to DR and BDR. Routers that are neither DR nor BDR do not
-          form and do not advertise adjacencies between them. They, however,
+          other routers on the broadcast or NBMA network connect to. 
+          As a result, routers on the broadcast or NBMA network advertise only 
+          their adjacency to DR and BDR. Routers that are neither DR nor BDR
+          do not form and do not advertise adjacencies between them. They, however,
           maintain a 2-Way adjacency state between them.</t>
 
-          <t>When Segment Routing is used, each router on the broadcast
-          segment MAY advertise the Adj-SID for its adjacency to DR using
+          <t>When Segment Routing is used, each router on the broadcast or NBMA
+          network MAY advertise the Adj-SID for its adjacency to DR using
           Adj-SID Sub-TLV as described in <xref target="ADJSIDSUBTLV"/>.</t>
 
           <t>SR capable router MAY also advertise Adj-SID for other neighbors
