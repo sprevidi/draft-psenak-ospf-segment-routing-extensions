@@ -967,7 +967,7 @@ where:</artwork>
                 This TLV MUST appear in the Adj-SID Sub-TLV and it MUST only
                 appear once.</t>
               </list></t>
-          </list>
+          </list></t>
       </section>
     </section>
 
