@@ -474,7 +474,7 @@ where:</artwork>
         receiving router MUST use the first encoded SID and MAY use the
         subsequent ones.</t>
 
-        <t>PHP flag MUST not be set on the Prefix-SIDs allocated to inter-
+        <t>PHP flag MUST NOT be set on the Prefix-SIDs allocated to inter-
         area prefixes that are originated by the router based on intra-area or
         inter-area reachability between areas.</t>
       </section>
@@ -553,9 +553,9 @@ where:</artwork>
           <section anchor="IPV4ERO" title="IPv4 ERO TLV">
             <t>IPv4 ERO TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
 
-            <t>The IPv4 ERO TLV describes a path segment using
-            IPv4 Address style of encoding. Its semantics have been borrowed
-            from <xref target="RFC3209"/>. <figure title="IPv4 ERO TLV format">
+            <t>The IPv4 ERO TLV describes a path segment using IPv4 Address
+            style of encoding. Its semantics have been borrowed from <xref
+            target="RFC3209"/>. <figure title="IPv4 ERO TLV format">
                 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -597,14 +597,13 @@ where:</artwork>
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV describes a path
-            segment that spans over an unnumbered interface. Unnumbered
-            interfaces are referenced using the interface index. Interface
-            indices are assigned local to the router and therefore not unique
-            within a domain. All elements in an ERO path need to be unique
-            within a domain and hence need to be disambiguated using a domain
-            unique Router-ID. <figure
-                title="Unnumbered Interface ID ERO TLV format">
+            <t>The Unnumbered Interface-ID ERO TLV describes a path segment
+            that spans over an unnumbered interface. Unnumbered interfaces are
+            referenced using the interface index. Interface indices are
+            assigned local to the router and therefore not unique within a
+            domain. All elements in an ERO path need to be unique within a
+            domain and hence need to be disambiguated using a domain unique
+            Router-ID. <figure title="Unnumbered Interface ID ERO TLV format">
                 <artwork> 
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -696,13 +695,13 @@ where: </artwork>
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV describes a path
-            segment that spans over an unnumbered interface. Unnumbered
-            interfaces are referenced using the interface index. Interface
-            indices are assigned local to the router and therefore not unique
-            within a domain. All elements in an ERO path need to be unique
-            within a domain and hence need to be disambiguated using a domain
-            unique Router-ID. <figure
+            <t>The Unnumbered Interface-ID ERO TLV describes a path segment
+            that spans over an unnumbered interface. Unnumbered interfaces are
+            referenced using the interface index. Interface indices are
+            assigned local to the router and therefore not unique within a
+            domain. All elements in an ERO path need to be unique within a
+            domain and hence need to be disambiguated using a domain unique
+            Router-ID. <figure
                 title="Unnumbered Interface ID Backup ERO TLV format">
                 <artwork> 
  0                   1                   2                   3
@@ -781,6 +780,7 @@ where: </artwork>
 +-                            TLVs                             -+
 |                             ...                               |</artwork>
           </figure></t>
+
         <t>Opaque type used by OSPFv2 Extended Link Opaque LSA is TBA</t>
 
         <t>The format of the TLVs within the body of LSA is the same as the
@@ -1081,14 +1081,14 @@ where:</artwork>
         <section title="Adjacency SID on Broadcast or NBMA Interfaces">
           <t>Broadcast or NBMA networks in OSPF are represented by a star
           topology where the Designated Router (DR) is the central point all
-          other routers on the broadcast or NBMA network connect to. 
-          As a result, routers on the broadcast or NBMA network advertise only 
+          other routers on the broadcast or NBMA network connect to. As a
+          result, routers on the broadcast or NBMA network advertise only
           their adjacency to DR and BDR. Routers that are neither DR nor BDR
-          do not form and do not advertise adjacencies between them. They, however,
-          maintain a 2-Way adjacency state between them.</t>
+          do not form and do not advertise adjacencies between them. They,
+          however, maintain a 2-Way adjacency state between them.</t>
 
-          <t>When Segment Routing is used, each router on the broadcast or NBMA
-          network MAY advertise the Adj-SID for its adjacency to DR using
+          <t>When Segment Routing is used, each router on the broadcast or
+          NBMA network MAY advertise the Adj-SID for its adjacency to DR using
           Adj-SID Sub-TLV as described in <xref target="ADJSIDSUBTLV"/>.</t>
 
           <t>SR capable router MAY also advertise Adj-SID for other neighbors
