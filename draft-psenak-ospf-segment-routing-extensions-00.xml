@@ -514,7 +514,7 @@ where:</artwork>
             TLV MUST appear in the SID/Label Binding Sub-TLV and it MUST only
             appear once.</t>
 
-            <t>ERO TLVs as defined in sections XXXXXXXX to XXXXXXX.</t>
+            <t>ERO TLVs as defined in <xref target="EROTLV"/>.</t>
           </list></t>
 
         <section anchor="EROTLV" title="ERO TLVs">
@@ -532,17 +532,17 @@ where:</artwork>
 
           <t>All Backup ERO TLVs must immediately follow last ERO Sub-TLV.</t>
 
-          <section anchor="IPV4ERO" title="IPv4 Prefix ERO TLV">
-            <t>IPv4 Prefix ERO TLV is a Sub-TLV of the SID/Lable Binding
+          <section anchor="IPV4ERO" title="IPv4 ERO TLV">
+            <t>IPv4 ERO TLV is a Sub-TLV of the SID/Lable Binding
             TLV.</t>
 
-            <t>The IPv4 ERO TLV describes a path segment using IPv4 Prefix</t>
+            <t>The IPv4 ERO TLV (Type: TBA) describes a path segment
+	    using IPv4 Address style of encoding.
+	    Its semantics have been borrowed
+            from <xref target="RFC3209"/>.
 
-            <t>The IPv4 ERO TLV describes a path segment using IPv4 Prefix
-            style of encoding. Its appearance and semantics have been borrowed
-            from <xref target="RFC3209"/>. <figure
-                title="IPv4 Prefix ERO TLV format">
-                <artwork>
+	    <figure title="IPv4 ERO TLV format">
+	      <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -552,27 +552,29 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                     IPv4 Address (4 octets)                   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-where:</artwork>
-              </figure><list style="hanging">
+	      </artwork>
+	    </figure>
+	    where:
+	    <list style="hanging">
                 <t>Type: TBA</t>
 
                 <t>Length: 8 bytes</t>
 
-                <t>Flags: 1 octet field of following flags:<figure
-                    align="center">
-                    <artwork>
+                <t>Flags: 1 octet field of following flags:
+		<figure align="center">
+		  <artwork>
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
 |L|             |
 +-+-+-+-+-+-+-+-+
-
-where: </artwork>
-                  </figure><list style="hanging">
-                    <t>L-bit - If the L bit is set, then the value of the
-                    attribute is 'loose.' Otherwise, the value of the
-                    attribute is 'strict.'</t>
-                  </list></t>
+		  </artwork>
+		</figure>
+		where:
+		<list style="hanging">
+		  <t>L-bit - If the L bit is set, then the value of the
+		  attribute is 'loose.' Otherwise, the value of the
+		  attribute is 'strict.'</t>
+		</list></t>
 
                 <t>IPv4 Address - the address of the explicit route hop.</t>
               </list></t>
@@ -585,7 +587,7 @@ where: </artwork>
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV (Type 9) describes a path
+            <t>The Unnumbered Interface-ID ERO TLV (Type TBA) describes a path
             segment that spans over an unnumbered interface. Unnumbered
             interfaces are referenced using the interface index. Interface
             indices are assigned local to the router and therefore not unique
@@ -634,14 +636,14 @@ where: </artwork>
               </list></t>
           </section>
 
-          <section anchor="IPV4BERO" title="IPv4 Prefix Backup ERO TLV">
+          <section anchor="IPV4BERO" title="IPv4 Backup ERO TLV">
             <t>IPv4 Prefix Backup ERO TLV is a Sub-TLV of the SID/Lable
             Binding TLV.</t>
 
             <t>The IPv4 Backup ERO TLV describes a path segment using IPv4
-            Prefix style of encoding. Its appearance and semantics have been
-            borrowed from <xref target="RFC3209"/>.<figure
-                title="IPv4 Prefix ERO TLV format">
+            Address style of encoding. Its semantics have been
+            borrowed from <xref target="RFC3209"/>.
+	    <figure title="IPv4 Backup ERO TLV format">
                 <artwork> 
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -652,27 +654,29 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                     IPv4 Address (4 octets)                   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-where:</artwork>
-              </figure><list style="hanging">
+		</artwork>
+	    </figure>
+	    where:
+	    <list style="hanging">
                 <t>Type: TBA</t>
 
                 <t>Length: 8 bytes</t>
 
-                <t>Flags: 1 octet field of following flags:<figure
-                    align="center">
-                    <artwork>
+                <t>Flags: 1 octet field of following flags:
+		<figure align="center">
+		  <artwork>
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
 |L|             |
 +-+-+-+-+-+-+-+-+
-
-where: </artwork>
-                  </figure><list style="hanging">
-                    <t>L-bit - If the L bit is set, then the value of the
-                    attribute is 'loose.' Otherwise, the value of the
-                    attribute is 'strict.'</t>
-                  </list></t>
+		  </artwork>
+		</figure>
+		where:
+		<list style="hanging">
+		  <t>L-bit - If the L bit is set, then the value of the
+		  attribute is 'loose.' Otherwise, the value of the
+		  attribute is 'strict.'</t>
+		</list></t>
 
                 <t>IPv4 Address - the address of the explicit route hop.</t>
               </list></t>
@@ -686,7 +690,7 @@ where: </artwork>
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV (Type 9) describes a path
+            <t>The Unnumbered Interface-ID ERO TLV (Type TBA) describes a path
             segment that spans over an unnumbered interface. Unnumbered
             interfaces are referenced using the interface index. Interface
             indices are assigned local to the router and therefore not unique
@@ -706,23 +710,25 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                         Interface ID                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-where:</artwork>
-              </figure><list style="hanging">
+		</artwork>
+	      </figure>
+	      where:
+	      <list style="hanging">
                 <t>Type: TBA</t>
 
                 <t>Length: 12 bytes</t>
 
-                <t>Flags: 1 octet field of following flags:<figure
-                    align="center">
-                    <artwork>
+                <t>Flags: 1 octet field of following flags:
+		<figure align="center">
+		  <artwork>
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
 |L|             |
 +-+-+-+-+-+-+-+-+
-
-where: </artwork>
-                  </figure><list style="hanging">
+		  </artwork>
+		</figure>
+		where:
+		<list style="hanging">
                     <t>L-bit - If the L bit is set, then the value of the
                     attribute is 'loose.' Otherwise, the value of the
                     attribute is 'strict.'</t>
