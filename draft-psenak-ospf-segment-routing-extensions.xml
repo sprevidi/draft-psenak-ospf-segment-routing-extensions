@@ -114,7 +114,7 @@
       </address>
     </author>
 
-    <date day="28" month="June" year="2013"/>
+    <date day="1" month="July" year="2013"/>
 
     <area>Routing</area>
 
@@ -170,10 +170,10 @@
       introduced for Segment Routing.</t>
 
       <t>Segment Routing architecture is described in <xref
-      target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
+      target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
 
       <t>Segment Routing use cases are described in <xref
-      target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
+      target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
     </section>
 
     <section title="Segment Routing Identifiers">
@@ -445,7 +445,7 @@ where:</artwork>
                 is set on Prefix-SIDs attached to a router loopback address.
                 The N-Flag is set when the Prefix-SID is a Node- SID as
                 described in <xref
-                target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
+                target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
 
                 <t>P-Flag: no-PHP flag. If set, then the penultimate hop MUST
                 NOT pop the Prefix-SID before delivering the packet to the
@@ -454,7 +454,7 @@ where:</artwork>
                 <t>M-Flag: Mapping Server Flag. If set, the SID is advertised
                 from the Segment Routing Mapping Server functionality as
                 described in <xref
-                target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
+                target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
 
                 <t>Other bits: MUST be zero when sent and ignored when
                 received.</t>
@@ -523,7 +523,7 @@ where:</artwork>
 
             <t>Weight: weight used for load-balancing purposes. The use of the
             weight is defined in <xref
-            target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
+            target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
           </list></t>
 
         <t>SID/Label Binding TLV currently supports following Sub-TLVs:<list
@@ -852,7 +852,7 @@ where:</artwork>
         <t>Adj-SID is an optional Sub-TLV of the Extended Link TLV. It MAY
         appear multiple times in Extended Link TLV. Examples where more than
         one Adj-SID may be used per neighbor are described in <xref
-        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>. The
+        target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>. The
         structure of the Adj-SID Sub-TLV is as follows: <figure>
             <artwork> 
  0                   1                   2                   3
@@ -884,7 +884,7 @@ where:</artwork>
                 <t>B-Flag: Backup-flag: set if the Adj-SID refer to an
                 adjacency being protected (e.g.: using IPFRR or MPLS-FRR) as
                 described in <xref
-                target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
+                target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
 
                 <t>Other bits: MUST be zero when originated and ignored when
                 received.</t>
@@ -895,7 +895,7 @@ where:</artwork>
 
             <t>Weight: weight used for load-balancing purposes. The use of the
             weight is defined in <xref
-            target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
+            target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
 
             <t>Adj-SID Sub-TLV supports following Sub-TLVs:<list
                 style="hanging">
@@ -908,7 +908,7 @@ where:</artwork>
         <t>A SR capable router MAY allocate an Adj-SID for each of its
         adjacencies and set the B-Flag when the adjacency is protected by a
         FRR mechanism (IP or MPLS) as described in <xref
-        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
+        target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
       </section>
 
       <section anchor="LANADJSIDSUBTLV" title="LAN Adj-SID/Label Sub-TLV">
@@ -948,7 +948,7 @@ where:</artwork>
                 <t>B-Flag: Backup-flag: set if the LAN-Adj-SID refer to an
                 adjacency being protected (e.g.: using IPFRR or MPLS-FRR) as
                 described in <xref
-                target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>.</t>
+                target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
 
                 <t>Other bits: MUST be zero when originated and ignored when
                 received.</t>
@@ -959,7 +959,7 @@ where:</artwork>
 
             <t>Weight: weight used for load-balancing purposes. The use of the
             weight is defined in <xref
-            target="draft-filsfils-rtgwg-segment-routing-00"/>.</t>
+            target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
 
             <t>LAN Adj-SID Sub-TLV supports following Sub-TLVs:<list
                 style="hanging">
@@ -984,7 +984,7 @@ where:</artwork>
 
         <t>Prefix-SID can also be advertised by the SR Mapping Servers (as
         described in <xref
-        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>). The
+        target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>). The
         Mapping Server advertise Prefix-SID for remote prefixes that exist in
         the network. Multiple Mapping Servers can advertise Prefix-SID for the
         same prefix, in which case the same Prefix-SID MUST be advertised by
@@ -1015,7 +1015,7 @@ where:</artwork>
             prefix, then the ABR will use the Prefix-SID advertised by any
             other router (e.g.: a Prefix-SID coming from an SR Mapping Server
             as defined in <xref
-            target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>) when
+            target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>) when
             propagating Prefix-SID for the prefix to other areas.</t>
           </list></t>
 
@@ -1039,7 +1039,7 @@ where:</artwork>
             the originating ABR will use the Prefix-SID advertised by any
             other router (e.g.: a Prefix-SID coming from an SR Mapping Server
             as defined in <xref
-            target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>) when
+            target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>) when
             propagating Prefix-SID for the prefix to other areas.</t>
           </list></t>
       </section>
@@ -1062,7 +1062,7 @@ where:</artwork>
         prefix. Otherwise the Prefix-SID advertised by any other router will
         be used (e.g.: a Prefix-SID coming from an SR Mapping Server as
         defined in <xref
-        target="draft-filsfils-rtgwg-segment-routing-use-cases-00"/>).</t>
+        target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>).</t>
       </section>
 
       <section title="Advertisement of Adj-SID">
@@ -1138,33 +1138,13 @@ where:</artwork>
     </references>
 
     <references title="Informative References">
-      <reference anchor="draft-filsfils-rtgwg-segment-routing-00">
-        <front>
-          <title>Segment Routing</title>
 
-          <author fullname="Stefano Previdi" initials="S." surname="Previdi"/>
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-00.xml"?>
 
-          <author fullname="Clarence Filsfils" initials="C."
-                  surname="Filsfils"/>
-
-          <date day="20" month="May" year="2013"/>
-        </front>
-      </reference>
-
-      <reference anchor="draft-filsfils-rtgwg-segment-routing-use-cases-00">
-        <front>
-          <title>Segment Routing Use Cases</title>
-
-          <author fullname="Clarence Filsfils" initials="C."
-                  surname="Filsfils"/>
-
-          <date day="20" month="May" year="2013"/>
-        </front>
-      </reference>
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-00.xml"?>
 
       <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-minto-rsvp-lsp-egress-fast-protection-02.xml"?>
 
-      <?rfc ?>
     </references>
   </back>
 </rfc>
