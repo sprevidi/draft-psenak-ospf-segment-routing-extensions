@@ -511,9 +511,10 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+
 |M|             |
 +-+-+-+-+-+-+-+-+
-
-where:</artwork>
-              </figure><list style="hanging">
+		</artwork>
+	      </figure>
+	      where:
+	      <list style="hanging">
                 <t>M-bit - When the bit is set the binding represents the
                 mirroring context as defined in
 		<xref target="I-D.minto-rsvp-lsp-egress-fast-protection"/>.</t>
