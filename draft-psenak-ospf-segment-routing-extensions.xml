@@ -515,7 +515,8 @@ where: </artwork>
 where:</artwork>
               </figure><list style="hanging">
                 <t>M-bit - When the bit is set the binding represents the
-                mirroring context.</t>
+                mirroring context as defined in
+		<xref target="I-D.minto-rsvp-lsp-egress-fast-protection"/>.</t>
               </list></t>
 
             <t>MT-ID: Multi-Topology ID (as defined in <xref
@@ -1113,6 +1114,7 @@ where:</artwork>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Anton Smirnov and Wim Hendricks.</t>
+
       <t>Many thanks to Yakov Rekhter, John Drake and Shraddha Hedge for their contribution on earlier
       incarnations of the "Binding / MPLS Label TLV" in
       <xref target="I-D.gredler-ospf-label-advertisement"/>. </t>
