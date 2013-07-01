@@ -1113,6 +1113,9 @@ where:</artwork>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Anton Smirnov and Wim Hendricks.</t>
+      <t>Many thanks to Yakov Rekhter, John Drake and Shraddha Hedge for their contribution on earlier
+      incarnations of the "Binding / MPLS Label TLV" in
+      <xref target="I-D.gredler-ospf-label-advertisement"/>. </t>
     </section>
   </middle>
 
@@ -1144,6 +1147,8 @@ where:</artwork>
       <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-00.xml"?>
 
       <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-minto-rsvp-lsp-egress-fast-protection-02.xml"?>
+
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-gredler-ospf-label-advertisement-03.xml"?>
 
     </references>
   </back>
