@@ -114,7 +114,7 @@
       </address>
     </author>
 
-    <date day="12" month="July" year="2013"/>
+    <date day="7" month="October" year="2013"/>
 
     <area>Routing</area>
 
@@ -203,7 +203,7 @@
 where:
 </artwork>
           </figure><list style="hanging">
-            <t>Type: TBA</t>
+            <t>Type: 1</t>
 
             <t>Length: variable, 3 or 4 bytes</t>
 
@@ -248,7 +248,7 @@ where:
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: TBA</t>
+            <t>Type: 8</t>
 
             <t>Length: variable</t>
 
@@ -284,7 +284,7 @@ where:</artwork>
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: TBA</t>
+            <t>Type: 9</t>
 
             <t>Length: variable</t>
 
@@ -333,7 +333,7 @@ where:</artwork>
 |                             ...                               |</artwork>
         </figure></t>
 
-      <t>Opaque type used by OSPFv2 Extended Prefix Opaque LSA is TBA.</t>
+      <t>Opaque type used by OSPFv2 Extended Prefix Opaque LSA is 7.</t>
 
       <t>The format of the TLVs within the body of the LSA is the same as the
       format used by the Traffic Engineering Extensions to OSPF defined in
@@ -379,7 +379,7 @@ where:</artwork>
 
 where: </artwork>
           </figure><list style="hanging">
-            <t>Type is TBA.</t>
+            <t>Type is 1.</t>
 
             <t>Length is variable</t>
 
@@ -419,12 +419,14 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |      Flags    |    MT-ID      |    Algorithm  |    Reserved   | 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Range Size           |            Reserved           +
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                           Index                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: TBA.</t>
+            <t>Type: 1.</t>
 
             <t>Length: A 16-bit field that indicates the length of the value
             portion in octets. Set to 8.</t>
@@ -465,7 +467,14 @@ where:</artwork>
 
             <t>Algorithm: one octet identifying the algorithm the Prefix-SID
             is associated with as defined in <xref target="SRALGO"/>.</t>
-
+            
+            <t> Range size: this field provides the ability to specify a 
+            range of addresses and their associated Prefix SIDs. It represents a
+            compression scheme to distribute a continuous Prefix and their continuous,
+            corresponding SID/Label Block. If a single SID is advertised then the Range
+            Size field MUST be set to one. For range advertisments > 1, Range Size
+            represents the the number of addresses that need to be mapped into a Prefix-SID.</t>
+            
             <t>Index: 32 bits representing the offset to the advertised
             SID/Label range.</t>
           </list></t>
@@ -474,9 +483,55 @@ where:</artwork>
         receiving router MUST use the first encoded SID and MAY use the
         subsequent ones.</t>
 
-        <t>PHP flag MUST NOT be set on the Prefix-SIDs allocated to inter-
-        area prefixes that are originated by the router based on intra-area or
-        inter-area reachability between areas.</t>
+        <t>P-Flag (no-PHP) MUST be set on the Prefix-SIDs allocated to inter-
+        area prefixes that are originated by the ABR based on intra-area or
+        inter-area reachability between areas. In case the inter-area prefix is 
+        generated based on the prefix which is directly attached to the ABR, 
+        P-Flag SHOULD not be set</t>
+        
+        <t>P-Flag (no-PHP) MUST not be set on the Prefix-SIDs allocated to 
+        redistributed prefixes, unless the redistributed prefix is directly
+        attached to ASBR, in which case the P-Flag SHOULD not be set.</t>
+        
+        <t>P-Flag (no-PHP) MUST be set on all SID adverrisements that are done by 
+        the Mapping Server</t>
+        
+        
+        <t>Example 1: if the following router addresses (loopback addresses)
+          need to be mapped into the corresponding Prefix SID indexes:
+          <figure suppress-title="true">
+           <artwork>
+          Router-A: 192.0.2.1/32, Prefix-SID: Index 1
+          Router-B: 192.0.2.2/32, Prefix-SID: Index 2
+          Router-C: 192.0.2.3/32, Prefix-SID: Index 3
+          Router-D: 192.0.2.4/32, Prefix-SID: Index 4
+           </artwork>
+           </figure></t>
+
+        <t> then the Prefix field in Extended Prefix TLV would be set to 192.0.2.1,
+        Prefix Length would be set to 32, Range Size in Prefix SID sub-TLV would be 4 
+        and Index value would be set to 1.</t>
+
+
+        <t>Example 2: If the following prefixes need to be mapped into the
+         corresponding Prefix-SID indexes:
+          <figure suppress-title="true">
+           <artwork>
+          10.1.1/24, Prefix-SID: Index 51
+          10.1.2/24, Prefix-SID: Index 52
+          10.1.3/24, Prefix-SID: Index 53
+          10.1.4/24, Prefix-SID: Index 54
+          10.1.5/24, Prefix-SID: Index 55
+          10.1.6/24, Prefix-SID: Index 56
+          10.1.7/24, Prefix-SID: Index 57
+           </artwork>
+           </figure></t>
+
+        <t> then the Prefix field in Extended Prefix TLV would be set to 10.1.1.0,
+        Prefix Length would be set to 24, Range Size in Prefix SID sub-TLV would be 7 
+        and Index value would be set to 51.</t>
+        
+        
       </section>
 
       <section anchor="SIDBINDING" title="SID/Label Binding TLV">
@@ -495,13 +550,15 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   Flags       |    MT-ID      |    Weight     |    Reserved   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Range Size           |            Reserved           +
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                      Sub-TLVs (variable)                      |
 +-                                                             -+
 |                                                               |
 
 where: </artwork>
           </figure><list style="hanging">
-            <t>Type: TBA</t>
+            <t>Type: 2</t>
 
             <t>Length: variable</t>
 
@@ -524,6 +581,8 @@ where: </artwork>
             <t>Weight: weight used for load-balancing purposes. The use of the
             weight is defined in <xref
             target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
+            
+            <t>Range Size: usage is the same as described in <xref target="PREFIXSID"/>.</t>
           </list></t>
 
         <t>SID/Label Binding TLV currently supports following Sub-TLVs:<list
@@ -568,7 +627,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	      </artwork>
               </figure> where: <list style="hanging">
-                <t>Type: TBA</t>
+                <t>Type: 2</t>
 
                 <t>Length: 8 bytes</t>
 
@@ -619,7 +678,7 @@ where: </artwork>
 
 where:</artwork>
               </figure><list style="hanging">
-                <t>Type: TBA</t>
+                <t>Type: 3</t>
 
                 <t>Length: 12 bytes</t>
 
@@ -665,7 +724,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		</artwork>
               </figure> where: <list style="hanging">
-                <t>Type: TBA</t>
+                <t>Type: 4</t>
 
                 <t>Length: 8 bytes</t>
 
@@ -717,7 +776,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		</artwork>
               </figure> where: <list style="hanging">
-                <t>Type: TBA</t>
+                <t>Type: 5</t>
 
                 <t>Length: 12 bytes</t>
 
@@ -781,7 +840,7 @@ where: </artwork>
 |                             ...                               |</artwork>
           </figure></t>
 
-        <t>Opaque type used by OSPFv2 Extended Link Opaque LSA is TBA</t>
+        <t>Opaque type used by OSPFv2 Extended Link Opaque LSA is 8.</t>
 
         <t>The format of the TLVs within the body of LSA is the same as the
         format used by the Traffic Engineering Extensions to OSPF defined in
@@ -833,7 +892,7 @@ where: </artwork>
 
 where:</artwork>
           </figure><list>
-            <t>Type is TBA.</t>
+            <t>Type is 1.</t>
 
             <t>Length is variable.</t>
 
@@ -868,7 +927,7 @@ where:</artwork>
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: TBA.</t>
+            <t>Type: 1.</t>
 
             <t>Length: variable.</t>
 
@@ -932,7 +991,7 @@ where:</artwork>
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: TBA.</t>
+            <t>Type: 2.</t>
 
             <t>Length: variable.</t>
 
@@ -1100,15 +1159,73 @@ where:</artwork>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
-      <t>TBD</t>
+    
+      <t> This specification updates two existing OSPF registries.</t>
+      
+      <t>Opaque Link-State Advertisements (LSA) Option Types:</t>
+      
+      	<t>o  7 - OSPFv2 Extended Prefix Opaque LSA</t> 
+      	<t>o  8 - OSPFv2 Extended Link Opaque LSA</t>
+      
+      <t> OSPF Router Information (RI) TLVs:</t>
+      	<t>o  8 - SR-Algorithm TLV</t>
+      	<t>o  9 - SID/Label Range TLV</t>
+      	
+      <t> This specification also creates four new registries:</t>
+          <t>- OSPF Extended Prefix LSA TLVs and sub-TLVs</t>
+          <t>- OSPF Extended Link LSA TLVs and sub-TLVs</t>
+          
+
+      <t>The OSPF Extend Prefix LSA TLV registry will define top-level TLVs for
+   Extended Prefix LSAs and should be placed in the existing OSPF IANA
+   registry.  New values can be allocated via IETF Consensus or IESG
+   Approval.</t>
+
+   <t>Following initial values are allocated:</t>
+   	<t>o  1 - OSPF Extended Prefix TLV</t>
+   	<t>o  2 - SID/Label Binding TLV</t>
+
+   
+   <t>The OSPF Extended Prefix sub-TLV registry will define will define sub-TLVs
+   at any level of nesting for Extended Prefix LSAs and should be placed in the
+   existing OSPF IANA registry.  New values can be allocated via IETF
+   Consensus or IESG Approval.</t>
+
+   <t>Following initial values are allocated:</t>
+   	<t>o  1 - SID/Label TLV</t>
+   	<t>o  2 - IPv4 ERO TLV</t>
+   	<t>o  3 - Unnumbered Interface ID ERO TLV</t>
+   	<t>o  4 - IPv4 Backup ERO TLV</t> 
+   	<t>o  5 - Unnumbered Interface ID Backup ERO TLV</t>
+ 
+   
+   <t>The OSPF Extend Link LSA TLV registry will define top-level TLVs for
+   Extended Link LSAs and should be placed in the existing OSPF IANA
+   registry.  New values can be allocated via IETF Consensus or IESG
+   Approval.</t>
+
+   <t>Following initial values are allocated:</t>
+   	<t>o  1 - OSPFv2 Extended Link TLV</t>
+   	<t>o  2 - LAN Adj-SID/Label Sub-TLV</t>
+
+   
+   <t>The OSPF Extended Link LSA sub-TLV registry will define will define sub-TLVs
+   at any level of nesting for Extended Link LSAs and should be placed in the
+   existing OSPF IANA registry.  New values can be allocated via IETF
+   Consensus or IESG Approval.</t>
+
+   <t>Following initial values are allocated:</t>
+   	<t>o  1 - SID/Label TLV</t>
+   
+   
     </section>
 
-    <section anchor="Manageability" title="Manageability Considerations">
-      <t>TBD</t>
-    </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>TBD</t>
+      <t>In general, new LSAs defined in this specificcatiin are subject 
+      to the same security concerns as those described in <xref target="RFC2328"/>. 
+      Additionally, implementations must assure that malformed TLV and Sub-TLV
+      permutations do not result in errors which cause hard OSPF failures.</t>
     </section>
 
     <section anchor="Contributors" title="Contributors">
