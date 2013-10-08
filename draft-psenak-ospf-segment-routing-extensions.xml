@@ -188,8 +188,8 @@
       aimed to replace any of the existing LSAs.</t>
 
       <section anchor="SIDLABEL" title="SID/Label sub-TLV">
-        <t>SID/Label sub-TLV appears in multiple TLVs or sub-TLVs
-        defined later in this document. It is used to advertise SID or label
+        <t>SID/Label sub-TLV appears in multiple TLVs or sub-TLVs defined
+        later in this document. It is used to advertise SID or label
         associated with the prefix or adjacency. SID/Lable TLV has following
         format:<figure>
             <artwork> 0                   1                   2                   3
@@ -467,14 +467,15 @@ where:</artwork>
 
             <t>Algorithm: one octet identifying the algorithm the Prefix-SID
             is associated with as defined in <xref target="SRALGO"/>.</t>
-            
-            <t> Range size: this field provides the ability to specify a 
-            range of addresses and their associated Prefix SIDs. It represents a
-            compression scheme to distribute a continuous Prefix and their continuous,
-            corresponding SID/Label Block. If a single SID is advertised then the Range
-            Size field MUST be set to one. For range advertisments > 1, Range Size
-            represents the the number of addresses that need to be mapped into a Prefix-SID.</t>
-            
+
+            <t>Range size: this field provides the ability to specify a range
+            of addresses and their associated Prefix SIDs. It represents a
+            compression scheme to distribute a continuous Prefix and their
+            continuous, corresponding SID/Label Block. If a single SID is
+            advertised then the Range Size field MUST be set to one. For range
+            advertisements &gt; 1, Range Size represents the the number of
+            addresses that need to be mapped into a Prefix-SID.</t>
+
             <t>Index: 32 bits representing the offset to the advertised
             SID/Label range.</t>
           </list></t>
@@ -485,38 +486,35 @@ where:</artwork>
 
         <t>P-Flag (no-PHP) MUST be set on the Prefix-SIDs allocated to inter-
         area prefixes that are originated by the ABR based on intra-area or
-        inter-area reachability between areas. In case the inter-area prefix is 
-        generated based on the prefix which is directly attached to the ABR, 
-        P-Flag SHOULD not be set</t>
-        
-        <t>P-Flag (no-PHP) MUST not be set on the Prefix-SIDs allocated to 
+        inter-area reachability between areas. In case the inter-area prefix
+        is generated based on the prefix which is directly attached to the
+        ABR, P-Flag SHOULD NOT be set</t>
+
+        <t>P-Flag (no-PHP) MUST NOT be set on the Prefix-SIDs allocated to
         redistributed prefixes, unless the redistributed prefix is directly
-        attached to ASBR, in which case the P-Flag SHOULD not be set.</t>
-        
-        <t>P-Flag (no-PHP) MUST be set on all SID adverrisements that are done by 
-        the Mapping Server</t>
-        
-        
+        attached to ASBR, in which case the P-Flag SHOULD NOT be set.</t>
+
+        <t>P-Flag (no-PHP) MUST be set on all SID advertisements that are done
+        by the Mapping Server</t>
+
         <t>Example 1: if the following router addresses (loopback addresses)
-          need to be mapped into the corresponding Prefix SID indexes:
-          <figure suppress-title="true">
-           <artwork>
+        need to be mapped into the corresponding Prefix SID indexes: <figure
+            suppress-title="true">
+            <artwork>
           Router-A: 192.0.2.1/32, Prefix-SID: Index 1
           Router-B: 192.0.2.2/32, Prefix-SID: Index 2
           Router-C: 192.0.2.3/32, Prefix-SID: Index 3
           Router-D: 192.0.2.4/32, Prefix-SID: Index 4
            </artwork>
-           </figure></t>
+          </figure></t>
 
-        <t> then the Prefix field in Extended Prefix TLV would be set to 192.0.2.1,
-        Prefix Length would be set to 32, Range Size in Prefix SID sub-TLV would be 4 
-        and Index value would be set to 1.</t>
-
+        <t>then the Prefix field in Extended Prefix TLV would be set to
+        192.0.2.1, Prefix Length would be set to 32, Range Size in Prefix SID
+        sub-TLV would be 4 and Index value would be set to 1.</t>
 
         <t>Example 2: If the following prefixes need to be mapped into the
-         corresponding Prefix-SID indexes:
-          <figure suppress-title="true">
-           <artwork>
+        corresponding Prefix-SID indexes: <figure suppress-title="true">
+            <artwork>
           10.1.1/24, Prefix-SID: Index 51
           10.1.2/24, Prefix-SID: Index 52
           10.1.3/24, Prefix-SID: Index 53
@@ -525,23 +523,21 @@ where:</artwork>
           10.1.6/24, Prefix-SID: Index 56
           10.1.7/24, Prefix-SID: Index 57
            </artwork>
-           </figure></t>
+          </figure></t>
 
-        <t> then the Prefix field in Extended Prefix TLV would be set to 10.1.1.0,
-        Prefix Length would be set to 24, Range Size in Prefix SID sub-TLV would be 7 
-        and Index value would be set to 51.</t>
-        
-        
+        <t>then the Prefix field in Extended Prefix TLV would be set to
+        10.1.1.0, Prefix Length would be set to 24, Range Size in Prefix SID
+        sub-TLV would be 7 and Index value would be set to 51.</t>
       </section>
 
       <section anchor="SIDBINDING" title="SID/Label Binding sub-TLV">
-        <t>SID/Label Binding sub-TLV is used to advertise SID/Label mapping for a
-        prefix or a path to the prefix. SID/Label value advertised in this sub-TLV
-        has local significance (to the router).</t>
+        <t>SID/Label Binding sub-TLV is used to advertise SID/Label mapping
+        for a prefix or a path to the prefix. SID/Label value advertised in
+        this sub-TLV has local significance (to the router).</t>
 
-        <t>SID/Label Binding sub-TLV is a sub-TLV of the OSPF Extended Prefix TLV.
-        Multiple SID/Label Binding TLVs can be present in OSPF Extended Prefix
-        TLV. SID/Label Binding sub-TLV has following format: <figure>
+        <t>SID/Label Binding sub-TLV is a sub-TLV of the OSPF Extended Prefix
+        TLV. Multiple SID/Label Binding TLVs can be present in OSPF Extended
+        Prefix TLV. SID/Label Binding sub-TLV has following format: <figure>
             <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -581,15 +577,16 @@ where: </artwork>
             <t>Weight: weight used for load-balancing purposes. The use of the
             weight is defined in <xref
             target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
-            
-            <t>Range Size: usage is the same as described in <xref target="PREFIXSID"/>.</t>
+
+            <t>Range Size: usage is the same as described in <xref
+            target="PREFIXSID"/>.</t>
           </list></t>
 
         <t>SID/Label Binding TLV currently supports following Sub-TLVs:<list
             style="hanging">
-            <t>SID/Label sub-TLV as described in <xref target="SIDLABEL"/>. This
-            sub-TLV MUST appear in the SID/Label Binding Sub-TLV and it MUST only
-            appear once.</t>
+            <t>SID/Label sub-TLV as described in <xref target="SIDLABEL"/>.
+            This sub-TLV MUST appear in the SID/Label Binding Sub-TLV and it
+            MUST only appear once.</t>
 
             <t>ERO sub-TLVs as defined in <xref target="EROTLV"/>.</t>
           </list></t>
@@ -597,24 +594,26 @@ where: </artwork>
         <section anchor="EROTLV" title="ERO sub-TLVs">
           <t>All 'ERO' information represents an ordered set which describes
           the segments of a path. The last ERO sub-TLV describes the segment
-          closest to the egress point, contrary the first ERO sub-TLV describes
-          the first segment of a path. If a router extends or stitches a path
-          it MUST prepend the new segments path information to the ERO
-          list.</t>
+          closest to the egress point, contrary the first ERO sub-TLV
+          describes the first segment of a path. If a router extends or
+          stitches a path it MUST prepend the new segments path information to
+          the ERO list.</t>
 
           <t>The above similarly applies to backup EROs.</t>
 
           <t>All ERO Sub-TLVs must immediately follow the (SID)/Label
           Sub-TLV.</t>
 
-          <t>All Backup sub-ERO TLVs must immediately follow last ERO Sub-TLV.</t>
+          <t>All Backup sub-ERO TLVs must immediately follow last ERO
+          Sub-TLV.</t>
 
           <section anchor="IPV4ERO" title="IPv4 ERO subTLV">
-            <t>IPv4 ERO sub-TLV is a Sub-TLV of the SID/Lable Binding sub-TLV.</t>
+            <t>IPv4 ERO sub-TLV is a Sub-TLV of the SID/Label Binding
+            sub-TLV.</t>
 
-            <t>The IPv4 ERO sub-TLV describes a path segment using IPv4 Address
-            style of encoding. Its semantics have been borrowed from <xref
-            target="RFC3209"/>. <figure title="IPv4 ERO sub-TLV format">
+            <t>The IPv4 ERO sub-TLV describes a path segment using IPv4
+            Address style of encoding. Its semantics have been borrowed from
+            <xref target="RFC3209"/>. <figure title="IPv4 ERO sub-TLV format">
                 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -650,19 +649,20 @@ where: </artwork>
           </section>
 
           <section anchor="UNNERO" title="Unnumbered Interface ID ERO sub-TLV">
-            <t>Unnumbered Interface ID ERO sub-TLV is a Sub-TLV of the SID/Lable
-            Binding sub-TLV.</t>
+            <t>Unnumbered Interface ID ERO sub-TLV is a Sub-TLV of the
+            SID/Label Binding sub-TLV.</t>
 
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO sub-TLV describes a path segment
-            that spans over an unnumbered interface. Unnumbered interfaces are
-            referenced using the interface index. Interface indices are
-            assigned local to the router and therefore not unique within a
-            domain. All elements in an ERO path need to be unique within a
-            domain and hence need to be disambiguated using a domain unique
-            Router-ID. <figure title="Unnumbered Interface ID ERO sub-TLV format">
+            <t>The Unnumbered Interface-ID ERO sub-TLV describes a path
+            segment that spans over an unnumbered interface. Unnumbered
+            interfaces are referenced using the interface index. Interface
+            indices are assigned local to the router and therefore not unique
+            within a domain. All elements in an ERO path need to be unique
+            within a domain and hence need to be disambiguated using a domain
+            unique Router-ID. <figure
+                title="Unnumbered Interface ID ERO sub-TLV format">
                 <artwork> 
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -705,7 +705,7 @@ where: </artwork>
           </section>
 
           <section anchor="IPV4BERO" title="IPv4 Backup ERO sub-TLV">
-            <t>IPv4 Prefix Backup ERO sub-TLV is a Sub-TLV of the SID/Lable
+            <t>IPv4 Prefix Backup ERO sub-TLV is a Sub-TLV of the SID/Label
             Binding sub-TLV.</t>
 
             <t>The IPv4 Backup ERO sub-TLV describes a path segment using IPv4
@@ -754,13 +754,13 @@ where: </artwork>
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO sub-TLV describes a path segment
-            that spans over an unnumbered interface. Unnumbered interfaces are
-            referenced using the interface index. Interface indices are
-            assigned local to the router and therefore not unique within a
-            domain. All elements in an ERO path need to be unique within a
-            domain and hence need to be disambiguated using a domain unique
-            Router-ID. <figure
+            <t>The Unnumbered Interface-ID ERO sub-TLV describes a path
+            segment that spans over an unnumbered interface. Unnumbered
+            interfaces are referenced using the interface index. Interface
+            indices are assigned local to the router and therefore not unique
+            within a domain. All elements in an ERO path need to be unique
+            within a domain and hence need to be disambiguated using a domain
+            unique Router-ID. <figure
                 title="Unnumbered Interface ID Backup ERO sub-TLV format">
                 <artwork> 
  0                   1                   2                   3
@@ -958,9 +958,9 @@ where:</artwork>
 
             <t>Adj-SID Sub-TLV supports following Sub-TLVs:<list
                 style="hanging">
-                <t>SID/Label sub-TLV as described in <xref target="SIDLABEL"/>.
-                This TLV MUST appear in the Adj-SID Sub-TLV and it MUST only
-                appear once.</t>
+                <t>SID/Label sub-TLV as described in <xref
+                target="SIDLABEL"/>. This TLV MUST appear in the Adj-SID
+                Sub-TLV and it MUST only appear once.</t>
               </list></t>
           </list></t>
 
@@ -1159,76 +1159,88 @@ where:</artwork>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
-    
-      <t> This specification updates two existing OSPF registries.</t>
-      
+      <t>This specification updates two existing OSPF registries.</t>
+
       <t>Opaque Link-State Advertisements (LSA) Option Types:</t>
-      
-      	<t>o  7 - OSPFv2 Extended Prefix Opaque LSA</t> 
-      	<t>o  8 - OSPFv2 Extended Link Opaque LSA</t>
-      
-      <t> OSPF Router Information (RI) TLVs:</t>
-      	<t>o  8 - SR-Algorithm TLV</t>
-      	<t>o  9 - SID/Label Range TLV</t>
-      	
-      <t> This specification also creates four new registries:</t>
-          <t>- OSPF Extended Prefix LSA TLVs and sub-TLVs</t>
-          <t>- OSPF Extended Link LSA TLVs and sub-TLVs</t>
-          
 
-      <t>The OSPF Extend Prefix LSA TLV registry will define top-level TLVs for
-   Extended Prefix LSAs and should be placed in the existing OSPF IANA
-   registry.  New values can be allocated via IETF Consensus or IESG
-   Approval.</t>
+      <t>o 7 - OSPFv2 Extended Prefix Opaque LSA</t>
 
-   <t>Following initial values are allocated:</t>
-        <t>o  0 - Reserved</t>
-   	<t>o  1 - OSPF Extended Prefix TLV</t>
+      <t>o 8 - OSPFv2 Extended Link Opaque LSA</t>
 
-   
-   <t>The OSPF Extended Prefix sub-TLV registry will define will define sub-TLVs
-   at any level of nesting for Extended Prefix LSAs and should be placed in the
-   existing OSPF IANA registry.  New values can be allocated via IETF
-   Consensus or IESG Approval.</t>
+      <t>OSPF Router Information (RI) TLVs:</t>
 
-   <t>Following initial values are allocated:</t>
-        <t>o  0 - Reserved</t>
-   	<t>o  1 - SID/Label sub-TLV</t>
-   	<t>o  2 - Prefix SID sub-TLV</t>
-   	<t>o  3 - SID/Label Binding sub-TLV</t>
-   	<t>o  4 - IPv4 ERO sub-TLV</t>
-   	<t>o  5 - Unnumbered Interface ID ERO sub-TLV</t>
-   	<t>o  6 - IPv4 Backup ERO sub-TLV</t> 
-   	<t>o  7 - Unnumbered Interface ID Backup ERO sub-TLV</t>
- 
-   
-   <t>The OSPF Extend Link LSA TLV registry will define top-level TLVs for
-   Extended Link LSAs and should be placed in the existing OSPF IANA
-   registry.  New values can be allocated via IETF Consensus or IESG
-   Approval.</t>
+      <t>o 8 - SR-Algorithm TLV</t>
 
-   <t>Following initial values are allocated:</t>
-   	<t>o  0 - Reserved</t>
-   	<t>o  1 - OSPFv2 Extended Link TLV</t>
+      <t>o 9 - SID/Label Range TLV</t>
 
-   
-   <t>The OSPF Extended Link LSA sub-TLV registry will define will define sub-TLVs
-   at any level of nesting for Extended Link LSAs and should be placed in the
-   existing OSPF IANA registry.  New values can be allocated via IETF
-   Consensus or IESG Approval.</t>
+      <t>This specification also creates four new registries:</t>
 
-   <t>Following initial values are allocated:</t>
-   	<t>o  1 - SID/Label sub-TLV</t>
-   	<t>o  2 - Adj-SID sub-TLV</t>
-   	<t>o  3 - LAN Adj-SID/Label Sub-TLV</t>
-   	
-   
+      <t>- OSPF Extended Prefix LSA TLVs and sub-TLVs</t>
+
+      <t>- OSPF Extended Link LSA TLVs and sub-TLVs</t>
+
+      <t>The OSPF Extend Prefix LSA TLV registry will define top-level TLVs
+      for Extended Prefix LSAs and should be placed in the existing OSPF IANA
+      registry. New values can be allocated via IETF Consensus or IESG
+      Approval.</t>
+
+      <t>Following initial values are allocated:</t>
+
+      <t>o 0 - Reserved</t>
+
+      <t>o 1 - OSPF Extended Prefix TLV</t>
+
+      <t>The OSPF Extended Prefix sub-TLV registry will define will define
+      sub-TLVs at any level of nesting for Extended Prefix LSAs and should be
+      placed in the existing OSPF IANA registry. New values can be allocated
+      via IETF Consensus or IESG Approval.</t>
+
+      <t>Following initial values are allocated:</t>
+
+      <t>o 0 - Reserved</t>
+
+      <t>o 1 - SID/Label sub-TLV</t>
+
+      <t>o 2 - Prefix SID sub-TLV</t>
+
+      <t>o 3 - SID/Label Binding sub-TLV</t>
+
+      <t>o 4 - IPv4 ERO sub-TLV</t>
+
+      <t>o 5 - Unnumbered Interface ID ERO sub-TLV</t>
+
+      <t>o 6 - IPv4 Backup ERO sub-TLV</t>
+
+      <t>o 7 - Unnumbered Interface ID Backup ERO sub-TLV</t>
+
+      <t>The OSPF Extend Link LSA TLV registry will define top-level TLVs for
+      Extended Link LSAs and should be placed in the existing OSPF IANA
+      registry. New values can be allocated via IETF Consensus or IESG
+      Approval.</t>
+
+      <t>Following initial values are allocated:</t>
+
+      <t>o 0 - Reserved</t>
+
+      <t>o 1 - OSPFv2 Extended Link TLV</t>
+
+      <t>The OSPF Extended Link LSA sub-TLV registry will define will define
+      sub-TLVs at any level of nesting for Extended Link LSAs and should be
+      placed in the existing OSPF IANA registry. New values can be allocated
+      via IETF Consensus or IESG Approval.</t>
+
+      <t>Following initial values are allocated:</t>
+
+      <t>o 1 - SID/Label sub-TLV</t>
+
+      <t>o 2 - Adj-SID sub-TLV</t>
+
+      <t>o 3 - LAN Adj-SID/Label Sub-TLV</t>
     </section>
 
-
     <section anchor="Security" title="Security Considerations">
-      <t>In general, new LSAs defined in this specificcatiin are subject 
-      to the same security concerns as those described in <xref target="RFC2328"/>. 
+      <t>In general, new LSAs defined in this document are subject to the same
+      security concerns as those described in <xref target="RFC2328"/>.
       Additionally, implementations must assure that malformed TLV and Sub-TLV
       permutations do not result in errors which cause hard OSPF failures.</t>
     </section>
@@ -1273,7 +1285,7 @@ where:</artwork>
     <references title="Informative References">
       <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-00.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-00.xml"?>
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-01.xml"?>
 
       <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-minto-rsvp-lsp-egress-fast-protection-02.xml"?>
 
