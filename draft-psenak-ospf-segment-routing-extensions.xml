@@ -188,7 +188,7 @@
       aimed to replace any of the existing LSAs.</t>
 
       <section anchor="SIDLABEL" title="SID/Label sub-TLV">
-        <t>SID/Label sub-TLV appears in multiple TLVs or TLVs or sub-TLVs
+        <t>SID/Label sub-TLV appears in multiple TLVs or sub-TLVs
         defined later in this document. It is used to advertise SID or label
         associated with the prefix or adjacency. SID/Lable TLV has following
         format:<figure>
