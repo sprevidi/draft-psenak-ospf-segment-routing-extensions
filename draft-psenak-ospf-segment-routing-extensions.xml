@@ -534,14 +534,14 @@ where:</artwork>
         
       </section>
 
-      <section anchor="SIDBINDING" title="SID/Label Binding TLV">
-        <t>SID/Label Binding TLV is used to advertise SID/Label mapping for a
-        prefix or a path to the prefix. SID/Label value advertised in this TLV
+      <section anchor="SIDBINDING" title="SID/Label Binding sub-TLV">
+        <t>SID/Label Binding sub-TLV is used to advertise SID/Label mapping for a
+        prefix or a path to the prefix. SID/Label value advertised in this sub-TLV
         has local significance (to the router).</t>
 
-        <t>SID/Label Binding TLV is a Sub-TLV of the OSPF Extended Prefix TLV.
+        <t>SID/Label Binding sub-TLV is a sub-TLV of the OSPF Extended Prefix TLV.
         Multiple SID/Label Binding TLVs can be present in OSPF Extended Prefix
-        TLV. SID/Label Binding TLV has following format: <figure>
+        TLV. SID/Label Binding sub-TLV has following format: <figure>
             <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -587,17 +587,17 @@ where: </artwork>
 
         <t>SID/Label Binding TLV currently supports following Sub-TLVs:<list
             style="hanging">
-            <t>SID/Lable TLV as described in <xref target="SIDLABEL"/>. This
-            TLV MUST appear in the SID/Label Binding Sub-TLV and it MUST only
+            <t>SID/Label sub-TLV as described in <xref target="SIDLABEL"/>. This
+            sub-TLV MUST appear in the SID/Label Binding Sub-TLV and it MUST only
             appear once.</t>
 
-            <t>ERO TLVs as defined in <xref target="EROTLV"/>.</t>
+            <t>ERO sub-TLVs as defined in <xref target="EROTLV"/>.</t>
           </list></t>
 
-        <section anchor="EROTLV" title="ERO TLVs">
+        <section anchor="EROTLV" title="ERO sub-TLVs">
           <t>All 'ERO' information represents an ordered set which describes
-          the segments of a path. The last ERO TLV describes the segment
-          closest to the egress point, contrary the first ERO TLV describes
+          the segments of a path. The last ERO sub-TLV describes the segment
+          closest to the egress point, contrary the first ERO sub-TLV describes
           the first segment of a path. If a router extends or stitches a path
           it MUST prepend the new segments path information to the ERO
           list.</t>
@@ -607,14 +607,14 @@ where: </artwork>
           <t>All ERO Sub-TLVs must immediately follow the (SID)/Label
           Sub-TLV.</t>
 
-          <t>All Backup ERO TLVs must immediately follow last ERO Sub-TLV.</t>
+          <t>All Backup sub-ERO TLVs must immediately follow last ERO Sub-TLV.</t>
 
-          <section anchor="IPV4ERO" title="IPv4 ERO TLV">
-            <t>IPv4 ERO TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
+          <section anchor="IPV4ERO" title="IPv4 ERO subTLV">
+            <t>IPv4 ERO sub-TLV is a Sub-TLV of the SID/Lable Binding sub-TLV.</t>
 
-            <t>The IPv4 ERO TLV describes a path segment using IPv4 Address
+            <t>The IPv4 ERO sub-TLV describes a path segment using IPv4 Address
             style of encoding. Its semantics have been borrowed from <xref
-            target="RFC3209"/>. <figure title="IPv4 ERO TLV format">
+            target="RFC3209"/>. <figure title="IPv4 ERO sub-TLV format">
                 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -649,20 +649,20 @@ where: </artwork>
               </list></t>
           </section>
 
-          <section anchor="UNNERO" title="Unnumbered Interface ID ERO TLV">
-            <t>Unnumbered Interface ID ERO TLV is a Sub-TLV of the SID/Lable
-            Binding TLV.</t>
+          <section anchor="UNNERO" title="Unnumbered Interface ID ERO sub-TLV">
+            <t>Unnumbered Interface ID ERO sub-TLV is a Sub-TLV of the SID/Lable
+            Binding sub-TLV.</t>
 
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV describes a path segment
+            <t>The Unnumbered Interface-ID ERO sub-TLV describes a path segment
             that spans over an unnumbered interface. Unnumbered interfaces are
             referenced using the interface index. Interface indices are
             assigned local to the router and therefore not unique within a
             domain. All elements in an ERO path need to be unique within a
             domain and hence need to be disambiguated using a domain unique
-            Router-ID. <figure title="Unnumbered Interface ID ERO TLV format">
+            Router-ID. <figure title="Unnumbered Interface ID ERO sub-TLV format">
                 <artwork> 
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -704,14 +704,14 @@ where: </artwork>
               </list></t>
           </section>
 
-          <section anchor="IPV4BERO" title="IPv4 Backup ERO TLV">
-            <t>IPv4 Prefix Backup ERO TLV is a Sub-TLV of the SID/Lable
-            Binding TLV.</t>
+          <section anchor="IPV4BERO" title="IPv4 Backup ERO sub-TLV">
+            <t>IPv4 Prefix Backup ERO sub-TLV is a Sub-TLV of the SID/Lable
+            Binding sub-TLV.</t>
 
-            <t>The IPv4 Backup ERO TLV describes a path segment using IPv4
+            <t>The IPv4 Backup ERO sub-TLV describes a path segment using IPv4
             Address style of encoding. Its semantics have been borrowed from
             <xref target="RFC3209"/>. <figure
-                title="IPv4 Backup ERO TLV format">
+                title="IPv4 Backup ERO sub-TLV format">
                 <artwork> 
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -747,21 +747,21 @@ where: </artwork>
           </section>
 
           <section anchor="UNNBERO"
-                   title="Unnumbered Interface ID Backup ERO TLV">
-            <t>Unnumbered Interface ID Backup TLV is a Sub-TLV of the
-            SID/Lable Binding TLV.</t>
+                   title="Unnumbered Interface ID Backup ERO sub-TLV">
+            <t>Unnumbered Interface ID Backup -sub-TLV is a sub-TLV of the
+            SID/Lable Binding sub-TLV.</t>
 
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
 
-            <t>The Unnumbered Interface-ID ERO TLV describes a path segment
+            <t>The Unnumbered Interface-ID ERO sub-TLV describes a path segment
             that spans over an unnumbered interface. Unnumbered interfaces are
             referenced using the interface index. Interface indices are
             assigned local to the router and therefore not unique within a
             domain. All elements in an ERO path need to be unique within a
             domain and hence need to be disambiguated using a domain unique
             Router-ID. <figure
-                title="Unnumbered Interface ID Backup ERO TLV format">
+                title="Unnumbered Interface ID Backup ERO sub-TLV format">
                 <artwork> 
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1193,13 +1193,13 @@ where:</artwork>
 
    <t>Following initial values are allocated:</t>
         <t>o  0 - Reserved</t>
-   	<t>o  1 - SID/Label TLV</t>
-   	<t>o  2 - Prefix SID Sub-TLV</t>
-   	<t>o  3 - SID/Label Binding TLV</t>
-   	<t>o  4 - IPv4 ERO TLV</t>
-   	<t>o  5 - Unnumbered Interface ID ERO TLV</t>
-   	<t>o  6 - IPv4 Backup ERO TLV</t> 
-   	<t>o  7 - Unnumbered Interface ID Backup ERO TLV</t>
+   	<t>o  1 - SID/Label sub-TLV</t>
+   	<t>o  2 - Prefix SID sub-TLV</t>
+   	<t>o  3 - SID/Label Binding sub-TLV</t>
+   	<t>o  4 - IPv4 ERO sub-TLV</t>
+   	<t>o  5 - Unnumbered Interface ID ERO sub-TLV</t>
+   	<t>o  6 - IPv4 Backup ERO sub-TLV</t> 
+   	<t>o  7 - Unnumbered Interface ID Backup ERO sub-TLV</t>
  
    
    <t>The OSPF Extend Link LSA TLV registry will define top-level TLVs for
@@ -1218,7 +1218,7 @@ where:</artwork>
    Consensus or IESG Approval.</t>
 
    <t>Following initial values are allocated:</t>
-   	<t>o  1 - SID/Label TLV</t>
+   	<t>o  1 - SID/Label sub-TLV</t>
    	<t>o  2 - Adj-SID sub-TLV</t>
    	<t>o  3 - LAN Adj-SID/Label Sub-TLV</t>
    	
