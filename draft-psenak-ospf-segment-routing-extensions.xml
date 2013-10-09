@@ -595,17 +595,17 @@ where: </artwork>
 
 
 <!-- begin Metric subTLV -->
-          <section anchor="METRICTLV" title="Metric sub-TLV">
-            <t>Metric TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
+          <section anchor="METRICTLV" title="ERO Metric sub-TLV">
+            <t>ERO Metric sub-TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
 
-            <t>The Metric sub-TLV carries the cost of an ERO path. It is used to
+            <t>The ERO Metric sub-TLV carries the cost of an ERO path. It is used to
 	    compare the cost of a given source/destination path. A router
-	    SHOULD advertise the Metric TLV. The cost of the Metric TLV SHOULD
-	    be set to the cumulative IGP or TE path cost of the advertised ERO.
+	    SHOULD advertise the ERO Metric sub-TLV. The cost of the ERO Metric sub-TLV
+	    SHOULD be set to the cumulative IGP or TE path cost of the advertised ERO.
 	    Since manipulation of the Metric field may attract or distract traffic
 	    from and to the advertised segment it MAY be manually overridden.
 	    
-	    <figure title="Metric TLV format">
+	    <figure title="ERO Metric sub-TLV format">
                 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -616,7 +616,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	      </artwork>
               </figure> where: <list style="hanging">
-                <t>Type: TBA</t>
+                <t>Type: 8</t>
 
                 <t>Length: 4 bytes</t>
 
@@ -1247,6 +1247,8 @@ where:</artwork>
       <t>o 6 - IPv4 Backup ERO sub-TLV</t>
 
       <t>o 7 - Unnumbered Interface ID Backup ERO sub-TLV</t>
+      
+      <t>o 8 - ERO Metric sub-TLV</t>
 
       <t>The OSPF Extend Link LSA TLV registry will define top-level TLVs for
       Extended Link LSAs and should be placed in the existing OSPF IANA
