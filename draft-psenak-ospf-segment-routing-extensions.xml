@@ -588,13 +588,13 @@ where: </artwork>
             This sub-TLV MUST appear in the SID/Label Binding Sub-TLV and it
             MUST only appear once.</t>
 
-            <t>Metric sub-TLV as defined in <xref target="METRICTLV"/>.</t>
+            <t>ERO Metric sub-TLV as defined in <xref target="METRICTLV"/>.</t>
 
             <t>ERO sub-TLVs as defined in <xref target="EROTLV"/>.</t>
           </list></t>
 
 
-<!-- begin Metric subTLV -->
+<!-- begin ERO Metric subTLV -->
           <section anchor="METRICTLV" title="ERO Metric sub-TLV">
             <t>ERO Metric sub-TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
 
@@ -624,7 +624,7 @@ where: </artwork>
               </list></t>
           </section>
 
-<!-- end metric subTLV -->
+<!-- end ERO metric subTLV -->
 
         <section anchor="EROTLV" title="ERO sub-TLVs">
           <t>All 'ERO' information represents an ordered set which describes
