@@ -494,8 +494,7 @@ where:</artwork>
         redistributed prefixes, unless the redistributed prefix is directly
         attached to ASBR, in which case the P-Flag SHOULD NOT be set.</t>
 
-        <t>P-Flag (no-PHP) MUST be set on all SID advertisements that are done
-        by the Mapping Server</t>
+        <t>When M-Flag is set, PHP MUST NOT be done.</t>
 
         <t>Example 1: if the following router addresses (loopback addresses)
         need to be mapped into the corresponding Prefix SID indexes: <figure
