@@ -190,7 +190,7 @@
       <section anchor="SIDLABEL" title="SID/Label sub-TLV">
         <t>SID/Label sub-TLV appears in multiple TLVs or sub-TLVs defined
         later in this document. It is used to advertise SID or label
-        associated with the prefix or adjacency. SID/Lable TLV has following
+        associated with the prefix or adjacency. SID/Label TLV has following
         format:<figure>
             <artwork> 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -587,25 +587,26 @@ where: </artwork>
             This sub-TLV MUST appear in the SID/Label Binding Sub-TLV and it
             MUST only appear once.</t>
 
-            <t>ERO Metric sub-TLV as defined in <xref target="METRICTLV"/>.</t>
+            <t>ERO Metric sub-TLV as defined in <xref
+            target="METRICTLV"/>.</t>
 
             <t>ERO sub-TLVs as defined in <xref target="EROTLV"/>.</t>
           </list></t>
 
+        <!-- begin ERO Metric subTLV -->
 
-<!-- begin ERO Metric subTLV -->
-          <section anchor="METRICTLV" title="ERO Metric sub-TLV">
-            <t>ERO Metric sub-TLV is a Sub-TLV of the SID/Lable Binding TLV.</t>
+        <section anchor="METRICTLV" title="ERO Metric sub-TLV">
+          <t>ERO Metric sub-TLV is a Sub-TLV of the SID/Label Binding TLV.</t>
 
-            <t>The ERO Metric sub-TLV carries the cost of an ERO path. It is used to
-	    compare the cost of a given source/destination path. A router
-	    SHOULD advertise the ERO Metric sub-TLV. The cost of the ERO Metric sub-TLV
-	    SHOULD be set to the cumulative IGP or TE path cost of the advertised ERO.
-	    Since manipulation of the Metric field may attract or distract traffic
-	    from and to the advertised segment it MAY be manually overridden.
-	    
-	    <figure title="ERO Metric sub-TLV format">
-                <artwork>
+          <t>The ERO Metric sub-TLV carries the cost of an ERO path. It is
+          used to compare the cost of a given source/destination path. A
+          router SHOULD advertise the ERO Metric sub-TLV. The cost of the ERO
+          Metric sub-TLV SHOULD be set to the cumulative IGP or TE path cost
+          of the advertised ERO. Since manipulation of the Metric field may
+          attract or distract traffic from and to the advertised segment it
+          MAY be manually overridden. <figure
+              title="ERO Metric sub-TLV format">
+              <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -614,16 +615,16 @@ where: </artwork>
 |                         Metric (4 octets)                     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	      </artwork>
-              </figure> where: <list style="hanging">
-                <t>Type: 8</t>
+            </figure> where: <list style="hanging">
+              <t>Type: 8</t>
 
-                <t>Length: 4 bytes</t>
+              <t>Length: 4 bytes</t>
 
-                <t>Metric: 4 bytes</t>
-              </list></t>
-          </section>
+              <t>Metric: 4 bytes</t>
+            </list></t>
+        </section>
 
-<!-- end ERO metric subTLV -->
+        <!-- end ERO metric subTLV -->
 
         <section anchor="EROTLV" title="ERO sub-TLVs">
           <t>All 'ERO' information represents an ordered set which describes
@@ -783,7 +784,7 @@ where: </artwork>
           <section anchor="UNNBERO"
                    title="Unnumbered Interface ID Backup ERO sub-TLV">
             <t>Unnumbered Interface ID Backup -sub-TLV is a sub-TLV of the
-            SID/Lable Binding sub-TLV.</t>
+            SID/Label Binding sub-TLV.</t>
 
             <t>The appearance and semantics of the 'Unnumbered Interface ID'
             have been borrowed from <xref target="RFC3477"/>.</t>
@@ -1246,7 +1247,7 @@ where:</artwork>
       <t>o 6 - IPv4 Backup ERO sub-TLV</t>
 
       <t>o 7 - Unnumbered Interface ID Backup ERO sub-TLV</t>
-      
+
       <t>o 8 - ERO Metric sub-TLV</t>
 
       <t>The OSPF Extend Link LSA TLV registry will define top-level TLVs for
