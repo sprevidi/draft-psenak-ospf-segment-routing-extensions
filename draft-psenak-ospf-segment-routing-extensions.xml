@@ -114,6 +114,24 @@
       </address>
     </author>
 
+    <author fullname="Wim Henderickx" initials="W." surname="Henderickx">
+      <organization>Alcatel-Lucent</organization>
+
+      <address>
+        <postal>
+          <street>Copernicuslaan 50</street>
+
+          <city>Antwerp</city>
+
+          <code>2018</code>
+
+          <country>BE</country>
+        </postal>
+
+        <email>wim.henderickx@alcatel-lucent.com</email>
+      </address>
+    </author>
+
     <date day="18" month="October" year="2013"/>
 
     <area>Routing</area>
@@ -1285,8 +1303,7 @@ where:</artwork>
     <section anchor="Contributors" title="Contributors">
       <t>The following people gave a substantial contribution to the content
       of this document: Ahmed Bashandy, Martin Horneffer, Bruno Decraene,
-      Stephane Litkowski, Igor Milojevic, Rob Shakir, Saku Ytti and Wim
-      Henderickx.</t>
+      Stephane Litkowski, Igor Milojevic, Rob Shakir and Saku Ytti.</t>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
