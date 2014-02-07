@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-psenak-ospf-segment-routing-extensions-03"
+<rfc category="std" docName="draft-psenak-ospf-segment-routing-extensions-04"
      ipr="trust200902">
   <front>
     <title abbrev="OSPF Extensions for Segment Routing">OSPF Extensions for
@@ -132,7 +132,7 @@
       </address>
     </author>
 
-    <date day="18" month="October" year="2013"/>
+    <date day="7" month="February" year="2014"/>
 
     <area>Routing</area>
 
@@ -293,7 +293,7 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Range Size           |           Reserved            |
+|                    Range Size                 |   Reserved    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                        Sub-TLVs (variable)                    |
 +-                                                             -+
@@ -306,7 +306,7 @@ where:</artwork>
 
             <t>Length: variable</t>
 
-            <t>Range Size: size of the SID/label range</t>
+            <t>Range Size: 3 octet of the SID/label range</t>
           </list></t>
 
         <t>Currently the only supported Sub-TLV is the SID/Label TLV as
@@ -1337,11 +1337,11 @@ where:</artwork>
     </references>
 
     <references title="Informative References">
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-00.xml"?>
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-01.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-01.xml"?>
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-02.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-minto-rsvp-lsp-egress-fast-protection-02.xml"?>
+      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-minto-rsvp-lsp-egress-fast-protection-03.xml"?>
 
       <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-gredler-ospf-label-advertisement-03.xml"?>
     </references>
