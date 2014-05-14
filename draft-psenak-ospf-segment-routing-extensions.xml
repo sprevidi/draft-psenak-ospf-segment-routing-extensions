@@ -132,7 +132,7 @@
       </address>
     </author>
 
-    <date day="7" month="February" year="2014"/>
+    <date day="13" month="May" year="2014"/>
 
     <area>Routing</area>
 
@@ -221,17 +221,18 @@
 where:
 </artwork>
           </figure><list style="hanging">
-            <t>Type: 1</t>
+            <t>Type: TBD, suggested value 1</t>
 
             <t>Length: variable, 3 or 4 bytes</t>
 
             <t>SID/Label: if length is set to 3, then the 20 rightmost bits
             represent a label. If length is set to 4 then the value represents
             a 32 bit SID.</t>
+            
+            <t>The receiving router MUST ignore SID/Label sub-TLV if the length 
+            is other then 3 or 4.</t>
 
-            <t/>
 
-            <t/>
           </list></t>
       </section>
     </section>
@@ -246,6 +247,11 @@ where:
       <section anchor="SRALGO" title="SR-Algorithm TLV">
         <t>SR-Algorithm TLV is a TLV of Router Information Opaque LSA (defined
         in <xref target="RFC4970"/>).</t>
+        
+        <t>The SR-Algorithm Sub-TLV is optional, it MAY only appear once
+        inside the Router Informational Opaque LSA. If the SID/Label Range TLV, as
+        defined in <xref target="SIDRANGE"/>, is advertised, then SR-Algorithm TLV MUST
+        also be advertised.</t>
 
         <t>Router may use various algorithms when calculating reachability to
         other nodes in area or to prefixes attached to these nodes. Examples
@@ -266,7 +272,7 @@ where:
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: 8</t>
+            <t>Type: TBD, suggested value 8</t>
 
             <t>Length: variable</t>
 
@@ -302,7 +308,7 @@ where:</artwork>
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: 9</t>
+            <t>Type: TBD, suggested value 9</t>
 
             <t>Length: variable</t>
 
@@ -313,6 +319,51 @@ where:</artwork>
         defined in <xref target="SIDLABEL"/>. SID/Label advertised in
         SID/Label TLV represents the first SID/Label from the advertised
         range.</t>
+        
+        <t>Multiple occurrence of the SID/Label Range TLV MAY be
+        advertised, in order to advertise multiple ranges. In such case:<list
+            style="symbols">
+
+            <t>The originating router MUST encode each range into a different SID/Label 
+            Range TLV. </t>
+
+            <t>The originating router decides in which order the set of SID/Label Range
+            TLVs are advertised inside Router Information Opaque LSA. The originating router
+            MUST ensure the order is same after a graceful restart (using checkpointing,
+            non-volatile storage or any other mechanism) in order to guarantee the same 
+            order before and after graceful restart.</t>
+            
+            <t> Receiving router must adhere to the order in which the ranges are 
+            advertised when calculating a SID/label from the SID index.</t>
+          </list></t>
+
+        <t>Here follows an example of advertisement of multiple ranges:<figure
+            suppress-title="true">
+            <artwork>
+   The originating router advertises following ranges:
+      Range 1: [100, 199]
+      Range 2: [1000, 1099]
+      Range 3: [500, 599]
+
+   The receiving routers concatenate the ranges and build the SRGB
+   is as follows:
+
+   SRGB = [100, 199]
+          [1000, 1099]
+          [500, 599]
+
+   The indexes span multiple ranges:
+
+      index=0 means label 100
+      ...
+      index 99 means label 199
+      index 100 means label 1000
+      index 199 means label 1099
+      ...
+      index 200 means label 500
+      ...
+</artwork>
+          </figure></t>
 
         <t>RI LSA can be advertised at any of the defined flooding scopes
         (link, area, or autonomous system (AS)). For the purpose of the
@@ -397,7 +448,7 @@ where:</artwork>
 
 where: </artwork>
           </figure><list style="hanging">
-            <t>Type is 1.</t>
+            <t>Type: TBD, suggested value 1.</t>
 
             <t>Length is variable</t>
 
@@ -444,7 +495,7 @@ where: </artwork>
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: 2.</t>
+            <t>Type: TBD, suggested value 2.</t>
 
             <t>Length: A 16-bit field that indicates the length of the value
             portion in octets. Set to 8.</t>
@@ -455,7 +506,7 @@ where:</artwork>
  0      
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
-|N|P|M|         |
+|N|P|M|E|       |
 +-+-+-+-+-+-+-+-+
 
 where:</artwork>
@@ -475,6 +526,11 @@ where:</artwork>
                 from the Segment Routing Mapping Server functionality as
                 described in <xref
                 target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
+                
+                <t>E-Flag: Explicit-Null Flag. If set, any upstream neighbor 
+                of the Prefix-SID originator MUST replace the Prefix-SID with 
+                a Prefix-SID having an Explicit-NULL value (0 for IPv4) before
+                forwarding the packet.</t>
 
                 <t>Other bits: MUST be zero when sent and ignored when
                 received.</t>
@@ -491,7 +547,7 @@ where:</artwork>
             compression scheme to distribute a continuous Prefix and their
             continuous, corresponding SID/Label Block. If a single SID is
             advertised then the Range Size field MUST be set to one. For range
-            advertisements &gt; 1, Range Size represents the the number of
+            advertisements &gt; 1, Range Size represents the number of
             addresses that need to be mapped into a Prefix-SID.</t>
 
             <t>Index: 32 bits representing the offset to the advertised
@@ -511,8 +567,30 @@ where:</artwork>
         <t>P-Flag (no-PHP) MUST NOT be set on the Prefix-SIDs allocated to
         redistributed prefixes, unless the redistributed prefix is directly
         attached to ASBR, in which case the P-Flag SHOULD NOT be set.</t>
+        
+        <t>If the P-flag is not set then any upstream neighbor of the Prefix-SID
+        originator MUST pop the Prefix-SID. This is equivalent to the penultimate
+        hop popping mechanism used in the MPLS dataplane. In such case MPLS EXP bits
+        of the Prefix-SID are not preserved to the ultimate hop (the Prefix-SID
+        being removed). If the P-flag is unset the received E-flag is ignored.</t>
+        
+        <t>If the P-flag is set then:<list style="hanging">
+        
+        <t> If the E-flag is not set then any upstream neighbor of the Prefix-SID 
+        originator MUST keep the Prefix-SID on top of the stack.  This is useful when
+        the originator of the Prefix-SID must stitch the incoming packet into a continuing
+        MPLS LSP to the final destination. This could occur at an inter-area border router
+        (prefix propagation from one area to another) or at an inter-domain border router 
+        (prefix propagation from one domain to another).</t>
+         
+         <t>If the E-flag is set then any upstream neighbor of the Prefix-SID originator 
+         MUST replace the PrefixSID with a Prefix-SID having an Explicit-NULL value. This
+         is useful, e.g., when the originator of the Prefix-SID is the final destination
+         for the related prefix and the originator wishes to receive the packet with the 
+         original EXP bits.</t>
+         </list></t>
 
-        <t>When M-Flag is set, PHP MUST NOT be done.</t>
+        <t>When M-Flag is set, P-flag MUST be set and E-bit MUST NOT be set.</t>
 
         <t>Example 1: if the following router addresses (loopback addresses)
         need to be mapped into the corresponding Prefix SID indexes: <figure
@@ -550,9 +628,30 @@ where:</artwork>
       <section anchor="SIDBINDING" title="SID/Label Binding sub-TLV">
         <t>SID/Label Binding sub-TLV is used to advertise SID/Label mapping
         for a prefix or a path to the prefix. SID/Label value advertised in
-        this sub-TLV has local significance (to the router).</t>
+        this sub-TLV has local significance (to the advertising router) and
+        the SID/Label value represents the absolute SID/Label value, not an  
+        offset.</t>
+        
+        <t>The SID/Label Binding TLV MAY be originated by any router in an
+        OSPF domain. The router may advertise a SID/Label binding to a FEC
+        along with at least a single 'nexthop style' anchor. The protocol
+        supports more than one 'nexthop style' anchor to be attached to a
+        SID/Label binding, which results into a simple path description
+        language. In analogy to RSVP the terminology for this is called an
+        'Explicit Route Object' (ERO). Since ERO style path notation allows to
+        anchor SID/label bindings to both link and node IP addresses any
+        label switched path, can be described. Furthermore also SID/Label
+        Bindings from external protocols can get easily re-advertised.</t>
 
-        <t>SID/Label Binding sub-TLV is a sub-TLV of the OSPF Extended Prefix
+        <t>The SID/Label Binding TLV may be used for advertising SID/Label
+        Bindings and their associated Primary and Backup paths. In one single
+        TLV either a primary ERO Path, a backup ERO Path or both are
+        advertised. If a router wants to advertise multiple parallel paths
+        then it can generate several TLVs for the same Prefix/FEC. Each
+        occurrence of a Binding TLV with respect with a given FEC Prefix has
+        accumulating and not canceling semantics.</t>
+
+        <t>SID/Label Binding sub-TLV is as sub-TLV of the OSPF Extended Prefix
         TLV. Multiple SID/Label Binding TLVs can be present in OSPF Extended
         Prefix TLV. SID/Label Binding sub-TLV has following format: <figure>
             <artwork>
@@ -571,7 +670,7 @@ where:</artwork>
 
 where: </artwork>
           </figure><list style="hanging">
-            <t>Type: 3</t>
+            <t>Type: TBD, suggested value 3</t>
 
             <t>Length: variable</t>
 
@@ -634,7 +733,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	      </artwork>
             </figure> where: <list style="hanging">
-              <t>Type: 8</t>
+              <t>Type: TBD, suggested value 8</t>
 
               <t>Length: 4 bytes</t>
 
@@ -679,7 +778,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	      </artwork>
               </figure> where: <list style="hanging">
-                <t>Type: 4</t>
+                <t>Type: TBD, suggested value 4</t>
 
                 <t>Length: 8 bytes</t>
 
@@ -731,7 +830,7 @@ where: </artwork>
 
 where:</artwork>
               </figure><list style="hanging">
-                <t>Type: 5</t>
+                <t>Type: TBD, suggested value 5</t>
 
                 <t>Length: 12 bytes</t>
 
@@ -777,7 +876,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		</artwork>
               </figure> where: <list style="hanging">
-                <t>Type: 6</t>
+                <t>Type: TBD, suggested value 6</t>
 
                 <t>Length: 8 bytes</t>
 
@@ -829,7 +928,7 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		</artwork>
               </figure> where: <list style="hanging">
-                <t>Type: 7</t>
+                <t>Type: TBD, suggested value 7</t>
 
                 <t>Length: 12 bytes</t>
 
@@ -980,7 +1079,7 @@ where:</artwork>
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: 2.</t>
+            <t>Type: TBD, suggested value 2.</t>
 
             <t>Length: variable.</t>
 
@@ -1044,7 +1143,7 @@ where:</artwork>
 
 where:</artwork>
           </figure><list style="hanging">
-            <t>Type: 3.</t>
+            <t>Type: TBD, suggested value 3.</t>
 
             <t>Length: variable.</t>
 
@@ -1216,15 +1315,15 @@ where:</artwork>
 
       <t>Opaque Link-State Advertisements (LSA) Option Types:</t>
 
-      <t>o 7 - OSPFv2 Extended Prefix Opaque LSA</t>
+      <t>o suggested value 7 - OSPFv2 Extended Prefix Opaque LSA</t>
 
-      <t>o 8 - OSPFv2 Extended Link Opaque LSA</t>
+      <t>o suggested value 8 - OSPFv2 Extended Link Opaque LSA</t>
 
       <t>OSPF Router Information (RI) TLVs:</t>
 
-      <t>o 8 - SR-Algorithm TLV</t>
+      <t>o suggested value 8 - SR-Algorithm TLV</t>
 
-      <t>o 9 - SID/Label Range TLV</t>
+      <t>o suggested value 9 - SID/Label Range TLV</t>
 
       <t>This specification also creates four new registries:</t>
 
