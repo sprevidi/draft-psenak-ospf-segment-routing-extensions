@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-psenak-ospf-segment-routing-extensions-04"
+<rfc category="std" docName="draft-psenak-ospf-segment-routing-extensions-05"
      ipr="trust200902">
   <front>
     <title abbrev="OSPF Extensions for Segment Routing">OSPF Extensions for
