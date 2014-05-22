@@ -131,8 +131,29 @@
         <email>wim.henderickx@alcatel-lucent.com</email>
       </address>
     </author>
+    
+    <author fullname="Jeff Tantsura" initials="J." surname="Tantsura">
+      <organization>Ericsson</organization>
 
-    <date day="13" month="May" year="2014"/>
+      <address>
+        <postal>
+          <street>300 Holger Way</street>
+
+          <city>San Jose</city>
+
+          <region>CA</region>
+
+          <code>95134</code>
+
+          <country>US</country>
+        </postal>
+
+        <email>Jeff.Tantsura@ericsson.com</email>
+      </address>
+    </author>
+    
+
+    <date day="22" month="May" year="2014"/>
 
     <area>Routing</area>
 
@@ -486,11 +507,11 @@ where: </artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Flags    |    MT-ID      |    Algorithm  |    Reserved   | 
+|      Flags    |   Reserved    |      MT-ID    |    Algorithm  | 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |          Range Size           |            Reserved           +
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                           Index                               |
+|                     SID/Index/Label (variable)                |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 where:</artwork>
@@ -506,7 +527,7 @@ where:</artwork>
  0      
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
-|N|P|M|E|       |
+|N|P|M|E|V|L|   |
 +-+-+-+-+-+-+-+-+
 
 where:</artwork>
@@ -531,7 +552,15 @@ where:</artwork>
                 of the Prefix-SID originator MUST replace the Prefix-SID with 
                 a Prefix-SID having an Explicit-NULL value (0 for IPv4) before
                 forwarding the packet.</t>
-
+                
+                <t>The V-Flag: Value/Index Flag. If set, then the Prefix-SID 
+                carries an absolute value. If not set, then the Prefix-SID carries 
+                an index.</t>
+                
+                <t>The L-Flag: Local/Global Flag. If set, then the value/index 
+                carried by the PrefixSID has local significance. If not set, then
+                the value/index carried by this subTLV has global significance.</t> 
+                
                 <t>Other bits: MUST be zero when sent and ignored when
                 received.</t>
               </list></t>
@@ -550,8 +579,16 @@ where:</artwork>
             advertisements &gt; 1, Range Size represents the number of
             addresses that need to be mapped into a Prefix-SID.</t>
 
-            <t>Index: 32 bits representing the offset to the advertised
-            SID/Label range.</t>
+            <t>SID/Index/Label: according to the V and L flags, it contains 
+            either: <list style="hanging">
+            
+            <t>A 32 bit index defining the offset in the SID/Label space advertised
+             by this router.</t>
+             
+            <t>A 24 bit label where the 20 rightmost bits are used for encoding 
+            the label value.</t>
+            </list></t>
+            
           </list></t>
 
         <t>If multiple Prefix-SIDs are advertised for the same prefix, the
@@ -627,10 +664,7 @@ where:</artwork>
 
       <section anchor="SIDBINDING" title="SID/Label Binding sub-TLV">
         <t>SID/Label Binding sub-TLV is used to advertise SID/Label mapping
-        for a prefix or a path to the prefix. SID/Label value advertised in
-        this sub-TLV has local significance (to the advertising router) and
-        the SID/Label value represents the absolute SID/Label value, not an  
-        offset.</t>
+        for a path to the prefix. </t>
         
         <t>The SID/Label Binding TLV MAY be originated by any router in an
         OSPF domain. The router may advertise a SID/Label binding to a FEC
@@ -1071,11 +1105,10 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Flags     |   MT-ID       |  Weight       |   Reserved    |
+|     Flags     |    Reserved   |   MT-ID       |  Weight       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Sub-TLVs (variable)                   |
-+-                                                             -+
-|                                                               |
+|                   SID/Label/Index (variable)                  |
++---------------------------------------------------------------+
 
 where:</artwork>
           </figure><list style="hanging">
@@ -1087,7 +1120,7 @@ where:</artwork>
                 <artwork>    
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
-|B|             |
+|B|V|L|S|       |
 +-+-+-+-+-+-+-+-+
 
 where:</artwork>
@@ -1096,6 +1129,18 @@ where:</artwork>
                 adjacency being protected (e.g.: using IPFRR or MPLS-FRR) as
                 described in <xref
                 target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
+                
+                <t>The V-Flag: Value/Index Flag. If set, then the Prefix-SID 
+                carries an absolute value. If not set, then the Prefix-SID carries 
+                an index.</t>
+                
+                <t>The L-Flag: Local/Global Flag. If set, then the value/index 
+                carried by the PrefixSID has local significance. If not set, then
+                the value/index carried by this subTLV has global significance.</t> 
+         
+                <t>The S-Flag. Set Flag. When set, the S-Flag indicates that the 
+                Adj-SID refers to a set of adjacencies (and therefore MAY be assigned
+                to other adjacencies as well).</t>
 
                 <t>Other bits: MUST be zero when originated and ignored when
                 received.</t>
@@ -1108,12 +1153,16 @@ where:</artwork>
             weight is defined in <xref
             target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
 
-            <t>Adj-SID Sub-TLV supports following Sub-TLVs:<list
-                style="hanging">
-                <t>SID/Label sub-TLV as described in <xref
-                target="SIDLABEL"/>. This TLV MUST appear in the Adj-SID
-                Sub-TLV and it MUST only appear once.</t>
-              </list></t>
+            <t>SID/Index/Label: according to the V and L flags, it contains 
+            either: <list style="hanging">
+            
+            <t>A 32 bit index defining the offset in the SID/Label space advertised
+             by this router.</t>
+             
+            <t>A 24 bit label where the 20 rightmost bits are used for encoding 
+            the label value.</t>
+            </list></t>
+            
           </list></t>
 
         <t>A SR capable router MAY allocate an Adj-SID for each of its
@@ -1137,9 +1186,8 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                        Neighbor ID                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         Sub-TLVs (variable)                   |
-+-                                                             -+
-|                                                               |
+|                    SID/Label/Index (variable)                 |
++---------------------------------------------------------------+
 
 where:</artwork>
           </figure><list style="hanging">
@@ -1151,7 +1199,7 @@ where:</artwork>
                 <artwork>    
  0 1 2 3 4 5 6 7 
 +-+-+-+-+-+-+-+-+
-|B|             |
+|B|V|L|S|       |
 +-+-+-+-+-+-+-+-+
 
 where:</artwork>
@@ -1160,6 +1208,18 @@ where:</artwork>
                 adjacency being protected (e.g.: using IPFRR or MPLS-FRR) as
                 described in <xref
                 target="I-D.filsfils-rtgwg-segment-routing-use-cases"/>.</t>
+                
+                <t>The V-Flag: Value/Index Flag. If set, then the Prefix-SID 
+                carries an absolute value. If not set, then the Prefix-SID carries 
+                an index.</t>
+                
+                <t> The L-Flag: Local/Global Flag. If set, then the value/index 
+                carried by the PrefixSID has local significance. If not set, then
+                the value/index carried by this subTLV has global significance.</t> 
+                
+                <t>The S-Flag. Set Flag. When set, the S-Flag indicates that the 
+                Adj-SID refers to a set of adjacencies (and therefore MAY be assigned
+                to other adjacencies as well).</t>
 
                 <t>Other bits: MUST be zero when originated and ignored when
                 received.</t>
@@ -1172,12 +1232,16 @@ where:</artwork>
             weight is defined in <xref
             target="I-D.filsfils-rtgwg-segment-routing"/>.</t>
 
-            <t>LAN Adj-SID Sub-TLV supports following Sub-TLVs:<list
-                style="hanging">
-                <t>SID/Label TLV as described in <xref target="SIDLABEL"/>.
-                This TLV MUST appear in the Adj-SID Sub-TLV and it MUST only
-                appear once.</t>
-              </list></t>
+            <t>SID/Index/Label: according to the V and L flags, it contains 
+            either: <list style="hanging">
+            
+            <t>A 32 bit index defining the offset in the SID/Label space advertised
+             by this router.</t>
+             
+            <t>A 24 bit label where the 20 rightmost bits are used for encoding 
+            the label value.</t>
+            </list></t>
+            
           </list></t>
       </section>
     </section>
