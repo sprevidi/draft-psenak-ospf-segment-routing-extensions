@@ -153,7 +153,7 @@
     </author>
     
 
-    <date day="22" month="May" year="2014"/>
+    <date day="5" month="June" year="2014"/>
 
     <area>Routing</area>
 
@@ -471,7 +471,7 @@ where: </artwork>
           </figure><list style="hanging">
             <t>Type: TBD, suggested value 1.</t>
 
-            <t>Length is variable</t>
+            <t>Length: variable</t>
 
             <t>Route type: type of the OSPF route. Supported types are:<figure>
                 <artwork>
@@ -518,8 +518,7 @@ where:</artwork>
           </figure><list style="hanging">
             <t>Type: TBD, suggested value 2.</t>
 
-            <t>Length: A 16-bit field that indicates the length of the value
-            portion in octets. Set to 8.</t>
+            <t>Length: variable</t>
 
             <t>Flags: 1 octet field. The following flags are defined: <figure
                 align="center">
@@ -594,6 +593,12 @@ where:</artwork>
         <t>If multiple Prefix-SIDs are advertised for the same prefix, the
         receiving router MUST use the first encoded SID and MAY use the
         subsequent ones.</t>
+        
+        <t>When calculating the outgoing label for the prefix, the router MUST
+        take into account E and P flags advertised by the next-hop router, if
+        next-hop router advertised the SID for the prefix.  This MUST be done
+        regardless of next-hop router contributing to the best path to the
+        prefix or not.</t>
 
         <t>P-Flag (no-PHP) MUST be set on the Prefix-SIDs allocated to inter-
         area prefixes that are originated by the ABR based on intra-area or
@@ -694,7 +699,7 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |             Length            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Flags       |    MT-ID      |    Weight     |    Reserved   |
+|   Flags       |    Reserved   |    MT-ID      |    Weight     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |          Range Size           |            Reserved           +
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1182,7 +1187,7 @@ where:</artwork>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              Type             |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Flags     |    MT-ID      |    Weight     |   Reserved    |
+|     Flags     |    Reserved   |     MT-ID     |    Weight     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                        Neighbor ID                            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1405,6 +1410,15 @@ where:</artwork>
       <t>o 0 - Reserved</t>
 
       <t>o 1 - OSPF Extended Prefix TLV</t>
+      
+      <t>Types in the range 32768-32023 are for experimental use; these
+      will not be registered with IANA, and MUST NOT be mentioned by
+      RFCs.</t>
+      
+      <t> Types in the range 32023-65535 are not to be assigned at this
+      time.  Before any assignments can be made in this range, there
+      MUST be a Standards Track RFC that specifies IANA Considerations
+      that covers the range being assigned.</t>
 
       <t>The OSPF Extended Prefix sub-TLV registry will define will define
       sub-TLVs at any level of nesting for Extended Prefix LSAs and should be
@@ -1430,6 +1444,15 @@ where:</artwork>
       <t>o 7 - Unnumbered Interface ID Backup ERO sub-TLV</t>
 
       <t>o 8 - ERO Metric sub-TLV</t>
+      
+      <t>Types in the range 32768-32023 are for experimental use; these
+      will not be registered with IANA, and MUST NOT be mentioned by
+      RFCs.</t>
+
+      <t>Types in the range 32023-65535 are not to be assigned at this
+      time.  Before any assignments can be made in this range, there
+      MUST be a Standards Track RFC that specifies IANA Considerations
+      that covers the range being assigned.</t>
 
       <t>The OSPF Extend Link LSA TLV registry will define top-level TLVs for
       Extended Link LSAs and should be placed in the existing OSPF IANA
@@ -1441,6 +1464,15 @@ where:</artwork>
       <t>o 0 - Reserved</t>
 
       <t>o 1 - OSPFv2 Extended Link TLV</t>
+      
+      <t>Types in the range 32768-32023 are for experimental use; these
+      will not be registered with IANA, and MUST NOT be mentioned by
+      RFCs.</t>
+
+      <t>Types in the range 32023-65535 are not to be assigned at this
+      time.  Before any assignments can be made in this range, there
+      MUST be a Standards Track RFC that specifies IANA Considerations
+      that covers the range being assigned.</t>
 
       <t>The OSPF Extended Link LSA sub-TLV registry will define will define
       sub-TLVs at any level of nesting for Extended Link LSAs and should be
@@ -1454,6 +1486,15 @@ where:</artwork>
       <t>o 2 - Adj-SID sub-TLV</t>
 
       <t>o 3 - LAN Adj-SID/Label Sub-TLV</t>
+      
+      <t>Types in the range 32768-32023 are for experimental use; these
+      will not be registered with IANA, and MUST NOT be mentioned by
+      RFCs.</t>
+
+      <t>Types in the range 32023-65535 are not to be assigned at this
+      time.  Before any assignments can be made in this range, there
+      MUST be a Standards Track RFC that specifies IANA Considerations
+      that covers the range being assigned.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -1480,33 +1521,33 @@ where:</artwork>
 
   <back>
     <references title="Normative References">
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3209.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3209.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3477.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3477.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3630.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3630.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5250.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5250.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2328.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2328.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4970.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4970.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4915.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4915.xml"?>
 
       <?rfc ?>
     </references>
 
     <references title="Informative References">
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-01.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-01.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-02.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-filsfils-rtgwg-segment-routing-use-cases-02.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-minto-rsvp-lsp-egress-fast-protection-03.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-minto-rsvp-lsp-egress-fast-protection-03.xml"?>
 
-      <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-gredler-ospf-label-advertisement-03.xml"?>
+      <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-gredler-ospf-label-advertisement-03.xml"?>
     </references>
   </back>
 </rfc>
