@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-psenak-ospf-segment-routing-extensions-05"
+<rfc category="std" docName="draft-ietf-ospf-segment-routing-extensions-00"
      ipr="trust200902">
   <front>
     <title abbrev="OSPF Extensions for Segment Routing">OSPF Extensions for
@@ -153,7 +153,7 @@
     </author>
     
 
-    <date day="5" month="June" year="2014"/>
+    <date day="19" month="June" year="2014"/>
 
     <area>Routing</area>
 
@@ -593,6 +593,11 @@ where:</artwork>
         <t>If multiple Prefix-SIDs are advertised for the same prefix, the
         receiving router MUST use the first encoded SID and MAY use the
         subsequent ones.</t>
+        
+        <t>When propagating Prefix-SIDs between areas, if multiple prefix-SIDs are 
+        advertised for a prefix, an implementation SHOULD preserve the original ordering, 
+        when advertising prefix-SIDs to other areas. This allows implementations that only
+        use single Prefix-SID to have a consistent view across areas.</t>
         
         <t>When calculating the outgoing label for the prefix, the router MUST
         take into account E and P flags advertised by the next-hop router, if
